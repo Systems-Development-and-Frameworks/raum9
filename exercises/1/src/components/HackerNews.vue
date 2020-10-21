@@ -36,10 +36,7 @@ export default {
       this.items.push(newsItem);
     },
     onNewsRemove(newsItem) {
-      let index = this.items.findIndex((element) => element.title === newsItem.title);
-      if (index > -1) {
-        this.items.splice(index, 1);
-      }
+      this.items = this.items.filter((element) => element.id !== newsItem.id)
     },
     onNewsVote() {
       this.items.sort((o1, o2) => o2.voteCount - o1.voteCount)
