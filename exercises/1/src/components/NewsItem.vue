@@ -19,11 +19,9 @@ export default {
   methods: {
     upvote() {
       this.newsItem.voteCount += 1;
-      this.$emit('update');
     },
     downvote() {
       this.newsItem.voteCount -= 1;
-      this.$emit('update');
     },
     remove() {
       this.$emit('news_remove', this.newsItem);
