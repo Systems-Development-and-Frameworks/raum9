@@ -20,7 +20,7 @@ export default {
       items: [{
         id: 0,
         title: "Start Message",
-        vote_count: 0,
+        voteCount: 0,
       }],
       id: 0
     }
@@ -30,7 +30,7 @@ export default {
       let newsItem = {
         id: this.id + 1,
         title: newsTitle,
-        vote_count: 0
+        voteCount: 0
       };
       this.id += 1;
       this.items.push(newsItem);
@@ -42,7 +42,7 @@ export default {
       }
     },
     onNewsVote() {
-      this.items.sort((o1, o2) => o2.vote_count - o1.vote_count)
+      this.items.sort((o1, o2) => o2.voteCount - o1.voteCount)
     }
   }
 }

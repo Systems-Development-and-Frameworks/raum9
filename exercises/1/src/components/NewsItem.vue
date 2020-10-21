@@ -1,6 +1,6 @@
 <template>
   <div class="news-item">
-    <h3>{{ newsItem.title }} ({{ newsItem.vote_count }})</h3>
+    <h3>{{ newsItem.title }} ({{ newsItem.voteCount }})</h3>
     <span>
       <button @click="upvote">upvote</button>
       <button @click="downvote">downvote</button>
@@ -18,11 +18,11 @@ export default {
   },
   methods: {
     upvote() {
-      this.newsItem.vote_count += 1;
+      this.newsItem.voteCount += 1;
       this.$emit('update');
     },
     downvote() {
-      this.newsItem.vote_count -= 1;
+      this.newsItem.voteCount -= 1;
       this.$emit('update');
     },
     remove() {
