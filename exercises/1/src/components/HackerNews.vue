@@ -22,7 +22,7 @@ export default {
         title: "Start Message",
         voteCount: 0,
       }],
-      id: 0
+      id: 1
     }
   },
   computed: {
@@ -35,11 +35,10 @@ export default {
   methods: {
     onNewsAdd(newsTitle) {
       let newsItem = {
-        id: this.id + 1,
+        id: this.id++,
         title: newsTitle,
         voteCount: 0
       };
-      this.id += 1;
       this.items.push(newsItem);
     },
     onNewsRemove(newsItem) {
