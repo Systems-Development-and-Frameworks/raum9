@@ -17,10 +17,7 @@ export default {
   },
   methods: {
     createNewsItem() {
-      this.$emit('news_add', {
-        title: this.news_input,
-        vote_count: 0
-      });
+      this.$emit('news_add', this.news_input);
       this.news_input = '';
     }
   }

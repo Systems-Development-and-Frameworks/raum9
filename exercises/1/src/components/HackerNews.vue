@@ -1,7 +1,7 @@
 <template>
   <div class="hacker-news">
     <h1>News List</h1>
-    <div v-for="item in items" :key="item.title">
+    <div v-for="item in items" :key="item.id">
       <NewsItem v-bind:news-item="item" v-on:news_remove="onNewsRemove" v-on:update="onNewsVote"/>
     </div>
     <NewsForm v-on:news_add="onNewsAdd"></NewsForm>
@@ -18,13 +18,21 @@ export default {
   data() {
     return {
       items: [{
+        id: 0,
         title: "Start Message",
-        vote_count: 0
-      }]
+        vote_count: 0,
+      }],
+      id: 0
     }
   },
   methods: {
-    onNewsAdd(newsItem) {
+    onNewsAdd(newsTitle) {
+      let newsItem = {
+        id: this.id + 1,
+        title: newsTitle,
+        vote_count: 0
+      };
+      this.id += 1;
       this.items.push(newsItem);
     },
     onNewsRemove(newsItem) {
