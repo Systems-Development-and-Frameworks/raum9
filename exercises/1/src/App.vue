@@ -1,18 +1,16 @@
 <template>
   <div id="app">
-    <HelloWorld/>
+    <HackerNews/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
-import NewsItem from './components/NewsItem'
+import HackerNews from './components/HackerNews'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
-    NewsItem
+    HackerNews
   }
 }
 </script>

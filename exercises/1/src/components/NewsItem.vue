@@ -1,10 +1,10 @@
 <template>
   <div class="news-item">
-    <h3>{{ msg }} ({{ votecount }})</h3>
+    <h3>{{ newsItem.title }} ({{ newsItem.vote_count }})</h3>
     <span>
-      <button v-on:click="upvote">upvote</button>
-      <button v-on:click="downvote">downvote</button>
-      <button v-on:click="remove">remove</button>
+      <button @click="upvote">upvote</button>
+      <button @click="downvote">downvote</button>
+      <button @click="remove">remove</button>
     </span>
   </div>
 </template>
@@ -12,31 +12,26 @@
 <script>
 export default {
   name: 'NewsItem',
-  props: [ 'msg' ],
-  data () {
-    return {
-      msg: "",
-      votecount: 0
-    }
+  props: ['newsItem'],
+  data() {
+    return {}
   },
   methods: {
-    upvote: function (event) {
-      // `this` inside methods point to the Vue instance
-      this.votecount += 1;
+    upvote() {
+      this.newsItem.vote_count += 1;
+      this.$emit('update');
     },
-    downvote: function (event) {
-      // `this` inside methods point to the Vue instance
-      this.votecount -= 1;
+    downvote() {
+      this.newsItem.vote_count -= 1;
+      this.$emit('update');
     },
-    remove: function (event) {
-      // `this` inside methods point to the Vue instance
-      alert('test')
+    remove() {
+      this.$emit('news_remove', this.newsItem);
     }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 </style>
