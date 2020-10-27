@@ -2,7 +2,7 @@
   <div class="hacker-news">
     <h1>News List</h1>
     <div v-for="item in sortedItems" :key="item.id">
-      <NewsItem v-bind:news-item="item" v-on:news_remove="onNewsRemove"/>
+      <NewsItem v-bind:news-item="item" v-on:news_remove="onNewsRemove" v-on:update="onVoteChange"/>
     </div>
     <NewsForm v-on:news_add="onNewsAdd"></NewsForm>
   </div>
@@ -44,6 +44,9 @@ export default {
     onNewsRemove(newsItem) {
       this.items = this.items.filter((element) => element.id !== newsItem.id)
     },
+    onVoteChange(args) {
+      args.newsItem.voteCount += args.voteChange;
+    }
   }
 }
 </script>
