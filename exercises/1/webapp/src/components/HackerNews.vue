@@ -27,9 +27,7 @@ export default {
   },
   computed: {
     sortedItems() {
-      let copiedItems = [...this.items];
-      copiedItems.sort((o1, o2) => o2.voteCount - o1.voteCount)
-      return copiedItems;
+      return [...this.items].sort((o1, o2) => o2.voteCount - o1.voteCount)
     }
   },
   methods: {
