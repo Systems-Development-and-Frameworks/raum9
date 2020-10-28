@@ -43,7 +43,8 @@ export default {
       this.items = this.items.filter((element) => element.id !== newsItem.id)
     },
     onVoteChange(args) {
-      args.newsItem.voteCount += args.voteChange;
+      let item = this.items.find((element) => element.id === args.newsItem.id)
+      item.voteCount += args.voteChange;
     }
   }
 }
