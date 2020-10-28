@@ -5,14 +5,14 @@
 </template>
 
 <script>
-import HackerNews from './components/HackerNews'
+import HackerNews from "./components/HackerNews";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     HackerNews
   }
-}
+};
 </script>
 
 <style>
