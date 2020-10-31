@@ -24,5 +24,5 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 # Run linter for vue files
 
 ```bash
-./node_modules/.bin/eslint src/**/**.vue
+npm run lint
 ```
