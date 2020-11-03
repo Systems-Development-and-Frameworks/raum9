@@ -33,13 +33,13 @@ export default {
   },
   computed: {
     sortedItems() {
-      let sortedArray
+      let sortedArray;
       if (this.ascending) {
         sortedArray = [...this.items].sort((o2, o1) => o2.voteCount - o1.voteCount);
       } else {
         sortedArray = [...this.items].sort((o1, o2) => o2.voteCount - o1.voteCount);
       }
-      return sortedArray
+      return sortedArray;
     }
   },
   methods: {
