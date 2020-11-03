@@ -1,4 +1,4 @@
-# Exercise 1
+# Hacker news Clone Webapp
 
 > Hacker news clone
 
