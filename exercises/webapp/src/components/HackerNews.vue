@@ -4,7 +4,7 @@
     <div v-for="item in sortedItems" :key="item.id">
       <NewsItem v-bind:news-item="item" v-on:news-remove="onNewsRemove" v-on:update="onVoteChange"/>
     </div>
-    <NewsForm v-on:news-add="onNewsAdd"></NewsForm>
+    <NewsForm v-on:news-add="onNewsAdd" v-on:switch="onSwitch"></NewsForm>
   </div>
 </template>
 
@@ -17,6 +17,7 @@ export default {
   components: {NewsItem, NewsForm},
   data() {
     return {
+      ascending: false,
       items: [{
         id: 0,
         title: "Start Message",
@@ -27,7 +28,16 @@ export default {
   },
   computed: {
     sortedItems() {
-      return [...this.items].sort((o1, o2) => o2.voteCount - o1.voteCount);
+      let sortedArray
+      if(this.ascending)
+      {
+        sortedArray= [...this.items].sort((o2, o1) => o2.voteCount - o1.voteCount);
+      }
+      else
+      {
+        sortedArray= [...this.items].sort((o1, o2) => o2.voteCount - o1.voteCount);
+      }
+      return sortedArray
     }
   },
   methods: {
@@ -45,6 +55,10 @@ export default {
     onVoteChange(args) {
       let item = this.items.find((element) => element.id === args.newsItem.id);
       item.voteCount += args.voteChange;
+    },
+    onSwitch()
+    {
+      this.ascending=! this.ascending;
     }
   }
 };
