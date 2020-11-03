@@ -27,3 +27,5 @@ jobs:
         working-directory: ${{env.working_dir}}
       - run: npm run lint
         working-directory: ${{env.working_dir}}
+      - run: npm run test
+        working-directory: ${{env.working_dir}}
