@@ -1,8 +1,13 @@
 <template>
   <div class="hacker-news">
     <h1>News List</h1>
-    <div v-for="item in sortedItems" :key="item.id">
-      <NewsItem v-bind:news-item="item" v-on:news-remove="onNewsRemove" v-on:update="onVoteChange"/>
+    <div v-if="sortedItems.length">
+      <div v-for="item in sortedItems" :key="item.id">
+        <NewsItem v-bind:news-item="item" v-on:news-remove="onNewsRemove" v-on:update="onVoteChange"/>
+      </div>
+    </div>
+    <div v-else id="news-placeholder">
+      The list is empty :(
     </div>
     <NewsForm v-on:news-add="onNewsAdd" v-on:switch="onSwitch"></NewsForm>
   </div>
@@ -28,16 +33,13 @@ export default {
   },
   computed: {
     sortedItems() {
-      let sortedArray
-      if(this.ascending)
-      {
-        sortedArray= [...this.items].sort((o2, o1) => o2.voteCount - o1.voteCount);
+      let sortedArray;
+      if (this.ascending) {
+        sortedArray = [...this.items].sort((o2, o1) => o2.voteCount - o1.voteCount);
+      } else {
+        sortedArray = [...this.items].sort((o1, o2) => o2.voteCount - o1.voteCount);
       }
-      else
-      {
-        sortedArray= [...this.items].sort((o1, o2) => o2.voteCount - o1.voteCount);
-      }
-      return sortedArray
+      return sortedArray;
     }
   },
   methods: {
@@ -56,9 +58,8 @@ export default {
       let item = this.items.find((element) => element.id === args.newsItem.id);
       item.voteCount += args.voteChange;
     },
-    onSwitch()
-    {
-      this.ascending=! this.ascending;
+    onSwitch() {
+      this.ascending = !this.ascending;
     }
   }
 };
