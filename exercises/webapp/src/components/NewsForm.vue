@@ -3,7 +3,8 @@
     <label>
       <input v-model="news_input" placeholder="edit me">
     </label>
-    <button @click="createNewsItem">create</button>
+    <button @click="createNewsItem" id="create-button">create</button>
+    <button @click="switchSortOrder" id="switch-order-button">switch sort order</button>
   </div>
 </template>
 
@@ -19,6 +20,9 @@ export default {
     createNewsItem() {
       this.$emit("news-add", this.news_input);
       this.news_input = "";
+    },
+    switchSortOrder() {
+      this.$emit("switch");
     }
   }
 };

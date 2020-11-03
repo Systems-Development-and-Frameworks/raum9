@@ -4,7 +4,7 @@
     <span>
       <button @click="upvote">upvote</button>
       <button @click="downvote">downvote</button>
-      <button @click="remove">remove</button>
+      <button @click="remove" id="remove-button">remove</button>
     </span>
   </div>
 </template>
