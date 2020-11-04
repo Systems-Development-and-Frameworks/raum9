@@ -1,11 +1,9 @@
 <template>
-  <div id="news-input">
-    <label>
-      <input v-model="news_input" placeholder="edit me">
-    </label>
-    <button @click="createNewsItem" id="create-button">create</button>
+  <form @submit.prevent="createNewsItem" id="news-input">
+    <input v-model="news_input" placeholder="edit me">
+    <input type="submit" value="create" name="createbtn" id="create-button">
     <button @click="switchSortOrder" id="switch-order-button">switch sort order</button>
-  </div>
+  </form>
 </template>
 
 <script>
