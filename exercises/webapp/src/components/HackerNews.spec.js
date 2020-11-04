@@ -71,7 +71,7 @@ describe("Placeholder", () => {
     expect(wrapper.findAllComponents(NewsItem).length).toEqual(0);
     expect(wrapper.find("#news-placeholder").text()).toEqual("The list is empty :(");
 
-    await wrapper.find("#create-button").trigger("click");
+    await wrapper.find("#news-input").trigger("submit.prevent")
     expect(wrapper.findAllComponents(NewsItem).length).toEqual(1);
     expect(wrapper.find("#news-placeholder").exists()).toEqual(false);
   });
