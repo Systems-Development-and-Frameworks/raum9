@@ -20,14 +20,11 @@ import NewsForm from "./NewsForm.vue";
 export default {
   name: "HackerNews",
   components: {NewsItem, NewsForm},
+  props: ["initialNews"],
   data() {
     return {
       ascending: false,
-      items: [{
-        id: 0,
-        title: "Start Message",
-        voteCount: 0,
-      }],
+      items: [...this.initialNews],
       id: 1
     };
   },

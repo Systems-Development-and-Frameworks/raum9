@@ -8,20 +8,16 @@ describe("Sorting Order", () => {
   let wrapper;
   beforeEach(() => {
     wrapper = mount(HackerNews, {
-      data() {
-        return {
-          ascending: false,
-          items: [{
-            id: 0,
-            title: "Message 1",
-            voteCount: 2
-          }, {
-            id: 1,
-            title: "Message 2",
-            voteCount: 4
-          }],
-          id: 2
-        };
+      propsData: {
+        initialNews: [{
+          id: 0,
+          title: "Message 1",
+          voteCount: 2
+        }, {
+          id: 1,
+          title: "Message 2",
+          voteCount: 4
+        }],
       }
     });
   });
@@ -47,16 +43,12 @@ describe("Placeholder", () => {
   let wrapper;
   beforeEach(() => {
     wrapper = mount(HackerNews, {
-      data() {
-        return {
-          ascending: false,
-          items: [{
-            id: 0,
-            title: "Message 1",
-            voteCount: 2,
-          }],
-          id: 1
-        };
+      propsData: {
+        initialNews: [{
+          id: 0,
+          title: "Message 1",
+          voteCount: 2,
+        }],
       }
     })
   });
@@ -66,7 +58,7 @@ describe("Placeholder", () => {
   });
 
   it("Show Placeholder if not items exists", async () => {
-    await wrapper.findAllComponents(NewsItem).at(0).find("#remove-button").trigger("click");
+    await wrapper.findAllComponents(NewsItem).at(0).find(".remove-button").trigger("click");
 
     expect(wrapper.findAllComponents(NewsItem).length).toEqual(0);
     expect(wrapper.find("#news-placeholder").text()).toEqual("The list is empty :(");

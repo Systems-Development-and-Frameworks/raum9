@@ -3,17 +3,24 @@ import HackerNews from './HackerNews';
 export default {
   title: 'HackerNews',
   component: HackerNews,
-  argTypes: {
-/*    backgroundColor: { control: 'color' },
-    size: { control: { type: 'select', options: ['small', 'medium', 'large'] } },*/
-  },
+  argTypes: {},
 };
 
-const Template = (args, { argTypes }) => ({
+const Template = (args, {argTypes}) => ({
   props: Object.keys(argTypes),
-  components: { HackerNews},
+  components: {HackerNews},
   template: '<HackerNews @onClick="onClick" v-bind="$props" />',
 });
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+  initialNews: [{
+    id: 0,
+    title: "Message 1",
+    voteCount: 2
+  }, {
+    id: 1,
+    title: "Message 2",
+    voteCount: 4
+  }],
+};

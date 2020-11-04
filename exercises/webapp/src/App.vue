@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <HackerNews/>
+    <HackerNews :initial-news="news"/>
   </div>
 </template>
 
@@ -9,6 +9,15 @@ import HackerNews from "./components/HackerNews";
 
 export default {
   name: "App",
+  data() {
+    return {
+      news: [{
+        id: 0,
+        title: "Start Message",
+        voteCount: 0,
+      }]
+    };
+  },
   components: {
     HackerNews
   }

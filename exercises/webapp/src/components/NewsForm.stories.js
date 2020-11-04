@@ -3,15 +3,12 @@ import NewsForm from './NewsForm';
 export default {
   title: 'NewsForm',
   component: NewsForm,
-  argTypes: {
-/*    backgroundColor: { control: 'color' },
-    size: { control: { type: 'select', options: ['small', 'medium', 'large'] } },*/
-  },
+  argTypes: {},
 };
 
-const Template = (args, { argTypes }) => ({
+const Template = (args, {argTypes}) => ({
   props: Object.keys(argTypes),
-  components: { NewsForm },
+  components: {NewsForm},
   template: '<NewsForm @onClick="onClick" v-bind="$props" />',
 });
 

@@ -3,15 +3,12 @@ import NewsItem from './NewsItem';
 export default {
   title: 'NewsItem',
   component: NewsItem,
-  argTypes: {
-/*    backgroundColor: { control: 'color' },
-    size: { control: { type: 'select', options: ['small', 'medium', 'large'] } },*/
-  },
+  argTypes: {},
 };
 
-const Template = (args, { argTypes }) => ({
+const Template = (args, {argTypes}) => ({
   props: Object.keys(argTypes),
-  components: { NewsItem },
+  components: {NewsItem},
   template: '<NewsItem @onClick="onClick" v-bind="$props" />',
 });
 
