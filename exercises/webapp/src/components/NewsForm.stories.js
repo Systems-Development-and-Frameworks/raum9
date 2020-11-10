@@ -1,4 +1,5 @@
 import NewsForm from './NewsForm';
+import {action} from "@storybook/addon-actions";
 
 export default {
   title: 'NewsForm',
@@ -9,7 +10,8 @@ export default {
 const Template = (args, {argTypes}) => ({
   props: Object.keys(argTypes),
   components: {NewsForm},
-  template: '<NewsForm @onClick="onClick" v-bind="$props" />',
+  methods: {onCreateNewsItem: action('onCreateNewsItem'), onSortOrder: action('onSortOrder')},
+  template: '<NewsForm @news-add="onCreateNewsItem" @switch="onSortOrder" v-bind="$props" />',
 });
 
 export const Default = Template.bind({});

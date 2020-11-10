@@ -9,7 +9,7 @@ export default {
 const Template = (args, {argTypes}) => ({
   props: Object.keys(argTypes),
   components: {HackerNews},
-  template: '<HackerNews @onClick="onClick" v-bind="$props" />',
+  template: '<HackerNews v-bind="$props" />',
 });
 
 export const Default = Template.bind({});
