@@ -3,13 +3,13 @@
     <h1>News List</h1>
     <div v-if="sortedItems.length">
       <div v-for="item in sortedItems" :key="item.id">
-        <NewsItem v-bind:news-item="item" v-on:news-remove="onNewsRemove" v-on:update="onVoteChange"/>
+        <NewsItem :news-item="item" @news-remove="onNewsRemove" @update="onVoteChange"/>
       </div>
     </div>
     <div v-else id="news-placeholder">
       The list is empty :(
     </div>
-    <NewsForm v-on:news-add="onNewsAdd" v-on:switch="onSwitch"></NewsForm>
+    <NewsForm @news-add="onNewsAdd" @switch="onSwitch"></NewsForm>
   </div>
 </template>
 
@@ -20,7 +20,9 @@ import NewsForm from './NewsForm.vue';
 export default {
   name: 'HackerNews',
   components: {NewsItem, NewsForm},
-  props: ['initialNews'],
+  props: {
+    initialNews: {type: Array, required: true}
+  },
   data() {
     return {
       ascending: false,

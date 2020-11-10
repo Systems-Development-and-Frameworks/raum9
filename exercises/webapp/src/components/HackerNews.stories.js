@@ -26,4 +26,4 @@ Default.args = {
 };
 
 export const Empty = Template.bind({});
-Empty.args = {initialNews: []}
+Empty.args = {initialNews: []};
