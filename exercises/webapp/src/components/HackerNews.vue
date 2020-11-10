@@ -27,7 +27,6 @@ export default {
     return {
       ascending: false,
       items: [...this.initialNews],
-      id: 1
     };
   },
   computed: {
@@ -39,12 +38,15 @@ export default {
         sortedArray = [...this.items].sort((o1, o2) => o2.voteCount - o1.voteCount);
       }
       return sortedArray;
+    },
+    nextId() {
+      return Math.max(...this.items.map(item => item.id), 0) + 1
     }
   },
   methods: {
     onNewsAdd(newsTitle) {
       let newsItem = {
-        id: this.id++,
+        id: this.nextId,
         title: newsTitle,
         voteCount: 0
       };
