@@ -17,6 +17,11 @@ jobs:
     env:
       working_dir: "exercises/webapp"
 
+    defaults:
+      run:
+        working-directory: ${{env.working_dir}}
+
+
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -24,8 +29,5 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-        working-directory: ${{env.working_dir}}
       - run: npm run lint
-        working-directory: ${{env.working_dir}}
       - run: npm run test
-        working-directory: ${{env.working_dir}}
