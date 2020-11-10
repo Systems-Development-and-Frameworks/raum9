@@ -40,7 +40,7 @@ export default {
       return sortedArray;
     },
     nextId() {
-      return Math.max(...this.items.map(item => item.id), 0) + 1
+      return Math.max(...this.items.map(item => item.id), 0) + 1;
     }
   },
   methods: {
