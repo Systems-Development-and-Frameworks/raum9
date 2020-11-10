@@ -1,6 +1,6 @@
 <template>
   <div class="news-item">
-    <h2>{{ newsItem.title }} ({{ newsItem.voteCount }})</h2>
+    <h2><span class="news-message">{{ newsItem.title }}</span> ({{ newsItem.voteCount }})</h2>
     <span>
       <button @click="upvote">upvote</button>
       <button @click="downvote">downvote</button>

@@ -23,18 +23,11 @@ describe('Sorting Order', () => {
   });
 
   it('sorting order', async () => {
-    expect(wrapper.findAllComponents(NewsItem).at(0).text()).toContain('Message 2');
-    expect(wrapper.findAllComponents(NewsItem).at(1).text()).toContain('Message 1');
-
+    expect(wrapper.findAll('h2>.news-message').wrappers.map(w => w.text())).toEqual(['Message 2', 'Message 1']);
     await wrapper.find('#switch-order-button').trigger('click');
-
-    expect(wrapper.findAllComponents(NewsItem).at(0).text()).toContain('Message 1');
-    expect(wrapper.findAllComponents(NewsItem).at(1).text()).toContain('Message 2');
-
+    expect(wrapper.findAll('h2>.news-message').wrappers.map(w => w.text())).toEqual(['Message 1', 'Message 2']);
     await wrapper.find('#switch-order-button').trigger('click');
-
-    expect(wrapper.findAllComponents(NewsItem).at(0).text()).toContain('Message 2');
-    expect(wrapper.findAllComponents(NewsItem).at(1).text()).toContain('Message 1');
+    expect(wrapper.findAll('h2>.news-message').wrappers.map(w => w.text())).toEqual(['Message 2', 'Message 1']);
   });
 });
 
@@ -63,7 +56,7 @@ describe('Placeholder', () => {
     expect(wrapper.findAllComponents(NewsItem).length).toEqual(0);
     expect(wrapper.find('#news-placeholder').text()).toEqual('The list is empty :(');
 
-    await wrapper.find('#news-input').trigger('submit.prevent');
+    await wrapper.find('#news-input').trigger('submit');
     expect(wrapper.findAllComponents(NewsItem).length).toEqual(1);
     expect(wrapper.find('#news-placeholder').exists()).toEqual(false);
   });
