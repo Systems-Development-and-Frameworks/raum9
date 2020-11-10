@@ -26,7 +26,7 @@
     "start": "npm run dev",
     "build": "node build/build.js",
     "lint": "eslint src/**/**.js src/**/**.vue",
-    "test": "jest",
+    "test:unit": "jest",
     "storybook": "start-storybook -p 6006 --no-dll",
     "build-storybook": "build-storybook --no-dll"
   },
