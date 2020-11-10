@@ -14,13 +14,13 @@
 </template>
 
 <script>
-import NewsItem from "./NewsItem.vue";
-import NewsForm from "./NewsForm.vue";
+import NewsItem from './NewsItem.vue';
+import NewsForm from './NewsForm.vue';
 
 export default {
-  name: "HackerNews",
+  name: 'HackerNews',
   components: {NewsItem, NewsForm},
-  props: ["initialNews"],
+  props: ['initialNews'],
   data() {
     return {
       ascending: false,

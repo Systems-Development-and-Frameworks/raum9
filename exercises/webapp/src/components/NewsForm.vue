@@ -11,19 +11,19 @@
 
 <script>
 export default {
-  name: "NewsForm",
+  name: 'NewsForm',
   data() {
     return {
-      news_input: "",
+      news_input: '',
     };
   },
   methods: {
     createNewsItem() {
-      this.$emit("news-add", this.news_input);
-      this.news_input = "";
+      this.$emit('news-add', this.news_input);
+      this.news_input = '';
     },
     switchSortOrder() {
-      this.$emit("switch");
+      this.$emit('switch');
     }
   }
 };

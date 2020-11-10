@@ -16,11 +16,11 @@ export const Default = Template.bind({});
 Default.args = {
   initialNews: [{
     id: 0,
-    title: "Message 1",
+    title: 'Message 1',
     voteCount: 2
   }, {
     id: 1,
-    title: "Message 2",
+    title: 'Message 2',
     voteCount: 4
   }],
 };

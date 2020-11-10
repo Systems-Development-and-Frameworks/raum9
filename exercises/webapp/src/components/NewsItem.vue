@@ -11,26 +11,26 @@
 
 <script>
 export default {
-  name: "NewsItem",
-  props: ["newsItem"],
+  name: 'NewsItem',
+  props: ['newsItem'],
   data() {
     return {};
   },
   methods: {
     upvote() {
-      this.$emit("update", {
+      this.$emit('update', {
         newsItem: this.newsItem,
         voteChange: 1
       });
     },
     downvote() {
-      this.$emit("update", {
+      this.$emit('update', {
         newsItem: this.newsItem,
         voteChange: -1
       });
     },
     remove() {
-      this.$emit("news-remove", this.newsItem);
+      this.$emit('news-remove', this.newsItem);
     }
   }
 };

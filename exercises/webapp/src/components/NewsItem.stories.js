@@ -16,7 +16,7 @@ export const Default = Template.bind({});
 Default.args = {
   newsItem: {
     id: 0,
-    title: "this is a test entry.",
+    title: 'this is a test entry.',
     voteCount: 0
   }
 };
