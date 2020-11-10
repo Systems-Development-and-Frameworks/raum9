@@ -24,3 +24,6 @@ Default.args = {
     voteCount: 4
   }],
 };
+
+export const Empty = Template.bind({});
+Empty.args = {initialNews: []}
