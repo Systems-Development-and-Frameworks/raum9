@@ -21,12 +21,12 @@ export default {
   name: 'HackerNews',
   components: {NewsItem, NewsForm},
   props: {
-    initialNews: {type: Array, required: true}
+    initialNews: {type: Array, required: false}
   },
   data() {
     return {
       ascending: false,
-      items: [...this.initialNews],
+      items: [...this.initialNews ?? []],
     };
   },
   computed: {
