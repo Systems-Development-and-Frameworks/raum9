@@ -1,5 +1,5 @@
 import NewsForm from './NewsForm';
-import {action} from "@storybook/addon-actions";
+import {action} from '@storybook/addon-actions';
 
 export default {
   title: 'NewsForm',
