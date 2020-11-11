@@ -4,22 +4,27 @@ import {
 import HackerNews from './HackerNews.vue';
 import NewsItem from './NewsItem.vue';
 
+const createWrapper = (options) => {
+  const defaults = {
+    propsData: {
+      initialNews: [{
+        id: 0,
+        title: 'Message 1',
+        voteCount: 2
+      }, {
+        id: 1,
+        title: 'Message 2',
+        voteCount: 4
+      }],
+    }
+  };
+  return mount(HackerNews, { ...defaults, ...options });
+}
+
 describe('Sorting Order', () => {
   let wrapper;
   beforeEach(() => {
-    wrapper = mount(HackerNews, {
-      propsData: {
-        initialNews: [{
-          id: 0,
-          title: 'Message 1',
-          voteCount: 2
-        }, {
-          id: 1,
-          title: 'Message 2',
-          voteCount: 4
-        }],
-      }
-    });
+    wrapper = createWrapper({})
   });
 
   it('sorting order', async () => {
@@ -35,7 +40,7 @@ describe('Sorting Order', () => {
 describe('Placeholder', () => {
   let wrapper;
   beforeEach(() => {
-    wrapper = mount(HackerNews, {
+    wrapper = createWrapper({
       propsData: {
         initialNews: [{
           id: 0,
@@ -50,7 +55,7 @@ describe('Placeholder', () => {
     expect(wrapper.findAllComponents(NewsItem).at(0).text()).toContain('Message 1');
   });
 
-  it('Show Placeholder if not items exists', async () => {
+  it('Show Placeholder if no item exists', async () => {
     await wrapper.findAllComponents(NewsItem).at(0).find('.remove-button').trigger('click');
 
     expect(wrapper.findAllComponents(NewsItem).length).toEqual(0);
