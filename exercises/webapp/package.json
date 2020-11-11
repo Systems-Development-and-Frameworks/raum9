@@ -27,8 +27,8 @@
     "build": "node build/build.js",
     "lint": "eslint src/**/**.js src/**/**.vue",
     "test:unit": "jest",
-    "storybook": "start-storybook -p 6006 --no-dll",
-    "build-storybook": "build-storybook --no-dll"
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "core-js": "^3.6.5",
