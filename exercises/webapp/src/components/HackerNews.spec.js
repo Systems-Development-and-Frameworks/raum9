@@ -19,12 +19,12 @@ const createWrapper = (options) => {
     }
   };
   return mount(HackerNews, { ...defaults, ...options });
-}
+};
 
 describe('Sorting Order', () => {
   let wrapper;
   beforeEach(() => {
-    wrapper = createWrapper({})
+    wrapper = createWrapper({});
   });
 
   it('sorting order', async () => {
