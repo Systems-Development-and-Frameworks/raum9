@@ -15,7 +15,7 @@ jobs:
         node-version: [14.x]
 
     env:
-      working_dir: "exercises/webapp"
+      working_dir: "webapp"
 
     defaults:
       run:
