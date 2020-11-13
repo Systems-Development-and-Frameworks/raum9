@@ -10,13 +10,15 @@ class PostDataStore extends DataSource {
             {
                 id: 1,
                 title: 'Message 1',
-                votes: 3,
+                votes: [],
                 author_id: 'Max Mustermann'
             },
             {
                 id: 2,
                 title: 'Message 2',
-                votes: 3,
+                votes: [
+                    'Max Mustermann'
+                ],
                 author_id: 'Max Mustermann2'
             }
 
@@ -34,7 +36,7 @@ class PostDataStore extends DataSource {
         let post = {
             id: Math.max(...this.posts.map(post => post.id), 0) + 1,
             title: title,
-            votes: 0,
+            votes: [],
             author_id: author_id
         }
         this.posts.push(post);
@@ -42,7 +44,14 @@ class PostDataStore extends DataSource {
     }
 
     upvotePost(id, user) {
-
+        let post = this.posts.find(post => post.id === parseInt(id));
+        if (post !== undefined) {
+            if (!post.votes.includes(user)) {
+                post.votes.push(user);
+            }
+            return post;
+        }
+        return null
     }
 }
 

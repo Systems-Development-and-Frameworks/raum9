@@ -36,7 +36,7 @@ describe('all posts query', () => {
                     {
                         id: 1,
                         title: "Test Message 1",
-                        votes: 3,
+                        votes: ["Max Mustermann"],
                         author_id: 'Max Mustermann'
                     }
                 ])
@@ -47,7 +47,7 @@ describe('all posts query', () => {
         const {query} = createTestClient(server);
 
         const {data: data} = await query({query: GET_POSTS, variables: {id: 1}});
-        expect(data.posts).toEqual([{title: "Test Message 1", votes: 3}]);
+        expect(data.posts).toEqual([{title: "Test Message 1", votes: 1}]);
     });
 });
 
@@ -107,7 +107,7 @@ describe('write(post: $postInput)', () => {
             {
                 id: 1,
                 title: "Test Message 1",
-                votes: 3,
+                votes: [],
                 author_id: 'Max Mustermann'
             }
         ]);
@@ -136,4 +136,109 @@ describe('write(post: $postInput)', () => {
             }
         })
     })
+})
+
+/*
+Upvote test
+ */
+
+describe('upvote(id: ID!, voter: UserInput!)', () => {
+    const opts = {
+        mutation: gql`
+            mutation($id: ID!, $voter: UserInput!) {
+                upvote(id: $id, voter: $voter) {
+                    id
+                    title
+                    votes
+                }
+            }
+        `,
+        variables: {
+            id: 1,
+            voter: {
+                name: "Max Mustermann"
+            }
+        }
+    }
+
+    it('adds a new votes', async () => {
+        const userDataStore = new UserDataStore([
+            {
+                name: 'Max Mustermann'
+            }
+        ]);
+        const postDataStore = new PostDataStore(userDataStore, [
+            {
+                id: 1,
+                title: "Test Message 1",
+                votes: [],
+                author_id: 'Max Mustermann'
+            }
+        ]);
+        const server = new ApolloServer({
+            typeDefs,
+            resolvers,
+            dataSources: () => ({
+                userDataStore: userDataStore,
+                postsDataStore: postDataStore
+            }),
+        });
+
+        // use the test server to create a query function
+        const {mutate} = createTestClient(server);
+
+        const res = await mutate(opts);
+
+        await expect(res).toMatchObject({
+            errors: undefined,
+            data: {
+                upvote: {
+                    id: "1",
+                    title: 'Test Message 1',
+                    votes: 1
+                }
+            }
+        })
+    })
+
+    it('not a new vote if user already voted', async () => {
+        const userDataStore = new UserDataStore([
+            {
+                name: 'Max Mustermann'
+            }
+        ]);
+        const postDataStore = new PostDataStore(userDataStore, [
+            {
+                id: 1,
+                title: "Test Message 1",
+                votes: ['Max Mustermann'],
+                author_id: 'Max Mustermann'
+            }
+        ]);
+        const server = new ApolloServer({
+            typeDefs,
+            resolvers,
+            dataSources: () => ({
+                userDataStore: userDataStore,
+                postsDataStore: postDataStore
+            }),
+        });
+
+        // use the test server to create a query function
+        const {mutate} = createTestClient(server);
+
+        const res = await mutate(opts);
+
+        await expect(res).toMatchObject({
+            errors: undefined,
+            data: {
+                upvote: {
+                    id: "1",
+                    title: 'Test Message 1',
+                    votes: 1
+                }
+            }
+        })
+    })
+
 })
