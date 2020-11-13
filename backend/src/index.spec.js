@@ -28,12 +28,16 @@ describe('all posts query', () => {
             typeDefs,
             resolvers,
             dataSources: () => ({
-                postsDataStore: new PostDataStore([
+                postsDataStore: new PostDataStore(new UserDataStore([
+                    {
+                        name: 'Max Mustermann'
+                    }
+                ]), [
                     {
                         id: 1,
                         title: "Test Message 1",
                         votes: 3,
-                        author: 'Max Mustermann'
+                        author_id: 'Max Mustermann'
                     }
                 ])
             }),

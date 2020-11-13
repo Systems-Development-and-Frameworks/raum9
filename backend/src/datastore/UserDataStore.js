@@ -8,11 +8,18 @@ class UserDataStore extends DataSource {
         this.users = users ?? [
             {
                 name: 'Max Mustermann',
+            },
+            {
+                name: 'Max Mustermann2',
             }
         ]
     }
 
     initialize({context}) {
+    }
+
+    getUserById(name) {
+        return this.users.find(user => user.name === name);
     }
 
     allUsers() {
