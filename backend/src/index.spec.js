@@ -19,13 +19,21 @@ describe('all posts query', () => {
         const server = new ApolloServer({
             typeDefs,
             resolvers,
-            dataSources: () => ({postsDataStore: new PostDataStore()}),
+            dataSources: () => ({
+                postsDataStore: new PostDataStore([
+                    {
+                        id: 1,
+                        title: "Test Message 1",
+                        votes: 3
+                    }
+                ])
+            }),
         });
 
         // use the test server to create a query function
         const {query} = createTestClient(server);
 
         const {data: data} = await query({query: GET_POSTS, variables: {id: 1}});
-        expect(data.posts).toEqual([{title: "Message 1", votes: 3}]);
+        expect(data.posts).toEqual([{title: "Test Message 1", votes: 3}]);
     });
 });

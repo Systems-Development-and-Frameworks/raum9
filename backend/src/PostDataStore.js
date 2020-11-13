@@ -2,10 +2,10 @@ const {DataSource} = require('apollo-datasource');
 
 class PostDataStore extends DataSource {
 
-    constructor() {
+    constructor(posts = null) {
         super()
 
-        this.posts = [
+        this.posts = posts ?? [
             {
                 id: 1,
                 title: "Message 1",
