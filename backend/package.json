@@ -4,7 +4,7 @@
   "scripts": {
     "server": "node src/index.js",
     "lint": "eslint src/**.js",
-    "test": "jest"
+    "test:unit": "jest"
   },
   "dependencies": {
     "apollo-datasource": "^0.7.2",

@@ -6,7 +6,7 @@ name: Node.js CI
 on: [push, pull_request]
 
 jobs:
-  build:
+  frontend:
 
     runs-on: ubuntu-latest
 
@@ -16,6 +16,32 @@ jobs:
 
     env:
       working_dir: "webapp"
+
+    defaults:
+      run:
+        working-directory: ${{env.working_dir}}
+
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm run lint
+      - run: npm run test:unit
+
+  backend:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    env:
+      working_dir: "backend"
 
     defaults:
       run:
