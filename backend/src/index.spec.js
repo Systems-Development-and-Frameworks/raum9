@@ -1,10 +1,10 @@
 const {createTestClient} = require('apollo-server-testing');
 const {ApolloServer, gql} = require('apollo-server');
 
-const typeDefs = require('./TypeDefs')
-const resolvers = require('./Resolvers')
-const PostDataStore = require('./datastore/PostDataStore')
-const UserDataStore = require('./datastore/UserDataStore')
+const typeDefs = require('./TypeDefs');
+const resolvers = require('./Resolvers');
+const PostDataStore = require('./datastore/PostDataStore');
+const UserDataStore = require('./datastore/UserDataStore');
 
 const GET_POSTS = gql`
     query get_posts {
@@ -35,19 +35,19 @@ describe('all posts query', () => {
                 ]), [
                     {
                         id: 1,
-                        title: "Test Message 1",
-                        votes: ["Max Mustermann"],
+                        title: 'Test Message 1',
+                        votes: ['Max Mustermann'],
                         author_id: 'Max Mustermann'
                     }
                 ])
-            }),
+            })
         });
 
         // use the test server to create a query function
         const {query} = createTestClient(server);
 
-        const {data: data} = await query({query: GET_POSTS, variables: {id: 1}});
-        expect(data.posts).toEqual([{title: "Test Message 1", votes: 1}]);
+        const {data} = await query({query: GET_POSTS, variables: {id: 1}});
+        expect(data.posts).toEqual([{title: 'Test Message 1', votes: 1}]);
     });
 });
 
@@ -59,17 +59,17 @@ describe('all user query', () => {
             dataSources: () => ({
                 userDataStore: new UserDataStore([
                     {
-                        name: "Max Mustermann"
+                        name: 'Max Mustermann'
                     }
                 ])
-            }),
+            })
         });
 
         // use the test server to create a query function
         const {query} = createTestClient(server);
 
-        const {data: data} = await query({query: GET_USERS});
-        expect(data.users).toEqual([{name: "Max Mustermann"}]);
+        const {data} = await query({query: GET_USERS});
+        expect(data.users).toEqual([{name: 'Max Mustermann'}]);
     });
 });
 
@@ -89,13 +89,13 @@ describe('write(post: $postInput)', () => {
         `,
         variables: {
             postInput: {
-                title: "New Post",
+                title: 'New Post',
                 author: {
-                    name: "Max Mustermann"
+                    name: 'Max Mustermann'
                 }
             }
         }
-    }
+    };
 
     it('creates and returns a post', async () => {
         const userDataStore = new UserDataStore([
@@ -106,7 +106,7 @@ describe('write(post: $postInput)', () => {
         const postDataStore = new PostDataStore(userDataStore, [
             {
                 id: 1,
-                title: "Test Message 1",
+                title: 'Test Message 1',
                 votes: [],
                 author_id: 'Max Mustermann'
             }
@@ -117,7 +117,7 @@ describe('write(post: $postInput)', () => {
             dataSources: () => ({
                 userDataStore: userDataStore,
                 postsDataStore: postDataStore
-            }),
+            })
         });
 
         // use the test server to create a query function
@@ -129,14 +129,14 @@ describe('write(post: $postInput)', () => {
             errors: undefined,
             data: {
                 write: {
-                    id: "2",
+                    id: '2',
                     title: 'New Post',
                     author: {name: 'Max Mustermann'}
                 }
             }
-        })
-    })
-})
+        });
+    });
+});
 
 /*
 Upvote test
@@ -156,10 +156,10 @@ describe('upvote(id: ID!, voter: UserInput!)', () => {
         variables: {
             id: 1,
             voter: {
-                name: "Max Mustermann"
+                name: 'Max Mustermann'
             }
         }
-    }
+    };
 
     it('adds a new votes', async () => {
         const userDataStore = new UserDataStore([
@@ -170,7 +170,7 @@ describe('upvote(id: ID!, voter: UserInput!)', () => {
         const postDataStore = new PostDataStore(userDataStore, [
             {
                 id: 1,
-                title: "Test Message 1",
+                title: 'Test Message 1',
                 votes: [],
                 author_id: 'Max Mustermann'
             }
@@ -181,7 +181,7 @@ describe('upvote(id: ID!, voter: UserInput!)', () => {
             dataSources: () => ({
                 userDataStore: userDataStore,
                 postsDataStore: postDataStore
-            }),
+            })
         });
 
         // use the test server to create a query function
@@ -193,13 +193,13 @@ describe('upvote(id: ID!, voter: UserInput!)', () => {
             errors: undefined,
             data: {
                 upvote: {
-                    id: "1",
+                    id: '1',
                     title: 'Test Message 1',
                     votes: 1
                 }
             }
-        })
-    })
+        });
+    });
 
     it('not a new vote if user already voted', async () => {
         const userDataStore = new UserDataStore([
@@ -210,7 +210,7 @@ describe('upvote(id: ID!, voter: UserInput!)', () => {
         const postDataStore = new PostDataStore(userDataStore, [
             {
                 id: 1,
-                title: "Test Message 1",
+                title: 'Test Message 1',
                 votes: ['Max Mustermann'],
                 author_id: 'Max Mustermann'
             }
@@ -221,7 +221,7 @@ describe('upvote(id: ID!, voter: UserInput!)', () => {
             dataSources: () => ({
                 userDataStore: userDataStore,
                 postsDataStore: postDataStore
-            }),
+            })
         });
 
         // use the test server to create a query function
@@ -233,12 +233,11 @@ describe('upvote(id: ID!, voter: UserInput!)', () => {
             errors: undefined,
             data: {
                 upvote: {
-                    id: "1",
+                    id: '1',
                     title: 'Test Message 1',
                     votes: 1
                 }
             }
-        })
-    })
-
-})
+        });
+    });
+});

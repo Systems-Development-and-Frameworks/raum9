@@ -1,12 +1,12 @@
-const {ApolloServer, gql} = require('apollo-server');
+const {ApolloServer} = require('apollo-server');
 
-const typeDefs = require('./TypeDefs')
-const resolvers = require('./Resolvers')
-const PostDataStore = require('./datastore/PostDataStore')
-const UserDataStore = require('./datastore/UserDataStore')
+const typeDefs = require('./TypeDefs');
+const resolvers = require('./Resolvers');
+const PostDataStore = require('./datastore/PostDataStore');
+const UserDataStore = require('./datastore/UserDataStore');
 
 const userDataStore = new UserDataStore();
-const postDataStore = new PostDataStore(userDataStore)
+const postDataStore = new PostDataStore(userDataStore);
 
 const server = new ApolloServer({
     typeDefs,

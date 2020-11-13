@@ -14,5 +14,7 @@ module.exports = {
         "semi": ["error", "always"],
         "quotes": ["error", "single"],
         "indent": ["error", 4],
+        "object-curly-spacing": "off",
+        "no-undef": "off"
     }
 };
