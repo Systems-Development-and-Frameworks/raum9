@@ -14,17 +14,18 @@ const GET_POSTS = gql`
     }
 `;
 
-it('fetches single launch', async () => {
-    const server = new ApolloServer({
-        typeDefs,
-        resolvers,
-        dataSources: () => ({postsDataStore: new PostDataStore()}),
+describe('all posts query', () => {
+    it('return all posts', async () => {
+        const server = new ApolloServer({
+            typeDefs,
+            resolvers,
+            dataSources: () => ({postsDataStore: new PostDataStore()}),
+        });
+
+        // use the test server to create a query function
+        const {query} = createTestClient(server);
+
+        const {data: data} = await query({query: GET_POSTS, variables: {id: 1}});
+        expect(data.posts).toEqual([{title: "Message 1", votes: 3}]);
     });
-
-    // use the test server to create a query function
-    const {query} = createTestClient(server);
-
-    // run query against the server and snapshot the output
-    const res = await query({query: GET_POSTS, variables: {id: 1}});
-    expect(res).toMatchSnapshot();
 });
