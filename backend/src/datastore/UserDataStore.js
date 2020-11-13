@@ -25,6 +25,14 @@ class UserDataStore extends DataSource {
     allUsers() {
         return this.users;
     }
+
+    createIfNotExists(name) {
+        if (this.getUserById(name) === undefined) {
+            this.users.push({
+                name: name
+            });
+        }
+    }
 }
 
 module.exports = UserDataStore

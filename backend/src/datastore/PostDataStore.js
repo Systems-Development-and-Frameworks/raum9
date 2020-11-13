@@ -40,6 +40,7 @@ class PostDataStore extends DataSource {
             author_id: author_id
         }
         this.posts.push(post);
+        this.userDataStore.createIfNotExists(author_id);
         return post;
     }
 
