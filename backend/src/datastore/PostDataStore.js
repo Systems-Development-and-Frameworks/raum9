@@ -27,21 +27,18 @@ class PostDataStore extends DataSource {
     }
 
     allPosts() {
-        return this.posts
-            .map(post => {
-                post.author = this.userDataStore.getUserById(post.author_id);
-                return post;
-            })
-            .filter(post => post.author !== undefined);
+        return this.posts;
     }
 
-    createPost(data) {
+    createPost(title, author_id) {
         let post = {
-            id: Math.max(...this.items.map(item => item.id), 0) + 1,
-            title: data,
-            votes: 0
+            id: Math.max(...this.posts.map(post => post.id), 0) + 1,
+            title: title,
+            votes: 0,
+            author_id: author_id
         }
-        this.posts.add(post);
+        this.posts.push(post);
+        return post;
     }
 
     upvotePost(id, user) {

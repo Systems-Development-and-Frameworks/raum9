@@ -72,3 +72,68 @@ describe('all user query', () => {
         expect(data.users).toEqual([{name: "Max Mustermann"}]);
     });
 });
+
+describe('write(post: $postInput)', () => {
+    const opts = {
+        mutation: gql`
+            mutation($postInput: PostInput!) {
+                write(post: $postInput) {
+                    id
+                    title
+                    votes
+                    author {
+                        name
+                    }
+                }
+            }
+        `,
+        variables: {
+            postInput: {
+                title: "New Post",
+                author: {
+                    name: "Max Mustermann"
+                }
+            }
+        }
+    }
+
+    it('creates and returns a post', async () => {
+        const userDataStore = new UserDataStore([
+            {
+                name: 'Max Mustermann'
+            }
+        ]);
+        const postDataStore = new PostDataStore(userDataStore, [
+            {
+                id: 1,
+                title: "Test Message 1",
+                votes: 3,
+                author_id: 'Max Mustermann'
+            }
+        ]);
+        const server = new ApolloServer({
+            typeDefs,
+            resolvers,
+            dataSources: () => ({
+                userDataStore: userDataStore,
+                postsDataStore: postDataStore
+            }),
+        });
+
+        // use the test server to create a query function
+        const {mutate} = createTestClient(server);
+
+        const res = await mutate(opts);
+
+        await expect(res).toMatchObject({
+            errors: undefined,
+            data: {
+                write: {
+                    id: "2",
+                    title: 'New Post',
+                    author: {name: 'Max Mustermann'}
+                }
+            }
+        })
+    })
+})

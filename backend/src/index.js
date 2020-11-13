@@ -6,12 +6,14 @@ const PostDataStore = require('./datastore/PostDataStore')
 const UserDataStore = require('./datastore/UserDataStore')
 
 const userDataStore = new UserDataStore();
+const postDataStore = new PostDataStore(userDataStore)
+
 const server = new ApolloServer({
     typeDefs,
     resolvers,
     dataSources: () => ({
         userDataStore: userDataStore,
-        postsDataStore: new PostDataStore(userDataStore)
+        postsDataStore: postDataStore
     })
 });
 
