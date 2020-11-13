@@ -8,8 +8,9 @@ class PostDataStore extends DataSource {
         this.posts = posts ?? [
             {
                 id: 1,
-                title: "Message 1",
-                votes: 3
+                title: 'Message 1',
+                votes: 3,
+                author: 'Max Mustermann'
             }
         ];
     }

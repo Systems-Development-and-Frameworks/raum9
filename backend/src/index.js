@@ -2,13 +2,15 @@ const {ApolloServer, gql} = require('apollo-server');
 
 const typeDefs = require('./TypeDefs')
 const resolvers = require('./Resolvers')
-const PostDataStore = require('./PostDataStore')
+const PostDataStore = require('./datastore/PostDataStore')
+const UserDataStore = require('./datastore/UserDataStore')
 
 const server = new ApolloServer({
     typeDefs,
     resolvers,
     dataSources: () => ({
-        postsDataStore: new PostDataStore()
+        postsDataStore: new PostDataStore(),
+        userDataStore: new UserDataStore()
     })
 });
 
