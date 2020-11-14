@@ -1,10 +1,15 @@
 <template>
   <div class="hacker-news">
     <h1>News List</h1>
-    <div v-for="item in sortedItems" :key="item.id">
-      <NewsItem v-bind:news-item="item" v-on:news_remove="onNewsRemove" v-on:update="onVoteChange"/>
+    <div v-if="sortedItems.length">
+      <div v-for="item in sortedItems" :key="item.id">
+        <NewsItem :news-item="item" @news-remove="onNewsRemove" @update="onVoteChange"/>
+      </div>
     </div>
-    <NewsForm v-on:news_add="onNewsAdd"></NewsForm>
+    <div v-else id="news-placeholder">
+      The list is empty :(
+    </div>
+    <NewsForm @news-add="onNewsAdd" @switch="onSwitch"></NewsForm>
   </div>
 </template>
 
@@ -15,39 +20,50 @@ import NewsForm from './NewsForm.vue';
 export default {
   name: 'HackerNews',
   components: {NewsItem, NewsForm},
+  props: {
+    initialNews: {type: Array, required: false}
+  },
   data() {
     return {
-      items: [{
-        id: 0,
-        title: "Start Message",
-        voteCount: 0,
-      }],
-      id: 1
-    }
+      ascending: false,
+      items: [...this.initialNews ?? []],
+    };
   },
   computed: {
     sortedItems() {
-      return [...this.items].sort((o1, o2) => o2.voteCount - o1.voteCount)
+      let sortedArray;
+      if (this.ascending) {
+        sortedArray = [...this.items].sort((o2, o1) => o2.voteCount - o1.voteCount);
+      } else {
+        sortedArray = [...this.items].sort((o1, o2) => o2.voteCount - o1.voteCount);
+      }
+      return sortedArray;
+    },
+    nextId() {
+      return Math.max(...this.items.map(item => item.id), 0) + 1;
     }
   },
   methods: {
     onNewsAdd(newsTitle) {
       let newsItem = {
-        id: this.id++,
+        id: this.nextId,
         title: newsTitle,
         voteCount: 0
       };
       this.items.push(newsItem);
     },
     onNewsRemove(newsItem) {
-      this.items = this.items.filter((element) => element.id !== newsItem.id)
+      this.items = this.items.filter((element) => element.id !== newsItem.id);
     },
     onVoteChange(args) {
-      let item = this.items.find((element) => element.id === args.newsItem.id)
+      let item = this.items.find((element) => element.id === args.newsItem.id);
       item.voteCount += args.voteChange;
+    },
+    onSwitch() {
+      this.ascending = !this.ascending;
     }
   }
-}
+};
 </script>
 
 <style scoped>

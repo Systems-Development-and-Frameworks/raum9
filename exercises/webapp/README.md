@@ -1,4 +1,4 @@
-# Exercise 1
+# Hacker news Clone Webapp
 
 > Hacker news clone
 
@@ -19,3 +19,10 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+
+# Run linter for vue files
+
+```bash
+npm run lint
+```

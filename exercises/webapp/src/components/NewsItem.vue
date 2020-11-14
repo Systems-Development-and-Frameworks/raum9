@@ -1,10 +1,10 @@
 <template>
   <div class="news-item">
-    <h3>{{ newsItem.title }} ({{ newsItem.voteCount }})</h3>
+    <h2><span class="news-message">{{ newsItem.title }}</span> ({{ newsItem.voteCount }})</h2>
     <span>
       <button @click="upvote">upvote</button>
       <button @click="downvote">downvote</button>
-      <button @click="remove">remove</button>
+      <button @click="remove" class="remove-button">remove</button>
     </span>
   </div>
 </template>
@@ -14,7 +14,7 @@ export default {
   name: 'NewsItem',
   props: ['newsItem'],
   data() {
-    return {}
+    return {};
   },
   methods: {
     upvote() {
@@ -30,10 +30,10 @@ export default {
       });
     },
     remove() {
-      this.$emit('news_remove', this.newsItem);
+      this.$emit('news-remove', this.newsItem);
     }
   }
-}
+};
 </script>
 
 <style scoped>

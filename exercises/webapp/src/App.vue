@@ -1,18 +1,27 @@
 <template>
   <div id="app">
-    <HackerNews/>
+    <HackerNews :initial-news="news"/>
   </div>
 </template>
 
 <script>
-import HackerNews from './components/HackerNews'
+import HackerNews from "./components/HackerNews";
 
 export default {
-  name: 'App',
+  name: "App",
+  data() {
+    return {
+      news: [{
+        id: 0,
+        title: "Start Message",
+        voteCount: 0,
+      }]
+    };
+  },
   components: {
     HackerNews
   }
-}
+};
 </script>
 
 <style>
