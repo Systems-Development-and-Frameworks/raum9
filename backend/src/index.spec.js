@@ -75,7 +75,7 @@ describe('server', () => {
                 postsDataStore: postDataStore
             })
         });
-    })
+    });
 
     describe('all posts query', () => {
         it('return all posts', async () => {
@@ -138,7 +138,6 @@ describe('server', () => {
      */
 
     describe('upvote(id: ID!, voter: UserInput!)', () => {
-
         it('adds a new votes', async () => {
             const {mutate} = createTestClient(server);
 
