@@ -11,7 +11,7 @@ class PostDataStore extends DataSource {
                 id: 1,
                 title: 'Message 1',
                 votes: [],
-                author_id: 'Max Mustermann'
+                author_id: 1
             },
             {
                 id: 2,
@@ -19,7 +19,7 @@ class PostDataStore extends DataSource {
                 votes: [
                     'Max Mustermann'
                 ],
-                author_id: 'Max Mustermann2'
+                author_id: 2
             }
 
         ];

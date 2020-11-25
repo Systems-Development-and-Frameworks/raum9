@@ -7,10 +7,14 @@ class UserDataStore extends DataSource {
 
         this.users = users ?? [
             {
+                id: 1,
                 name: 'Max Mustermann',
+                email: 'max@mustermann.de'
             },
             {
+                id: 2,
                 name: 'Max Mustermann2',
+                email: 'max@mustermann2.de'
             }
         ]
     }
@@ -18,8 +22,8 @@ class UserDataStore extends DataSource {
     initialize({context}) {
     }
 
-    getUserById(name) {
-        return this.users.find(user => user.name === name);
+    getUserById(id) {
+        return this.users.find(user => user.id === id);
     }
 
     allUsers() {
