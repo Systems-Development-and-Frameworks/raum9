@@ -53,7 +53,7 @@ describe('server', () => {
                 name: 'Max Mustermann'
             }
         ]);
-        const postDataStore = new PostDataStore(userDataStore, [
+        const postsDataStore = new PostDataStore(userDataStore, [
             {
                 id: 1,
                 title: 'Test Message 1',
@@ -71,8 +71,8 @@ describe('server', () => {
             typeDefs,
             resolvers,
             dataSources: () => ({
-                userDataStore: userDataStore,
-                postsDataStore: postDataStore
+                userDataStore,
+                postsDataStore
             })
         });
     });

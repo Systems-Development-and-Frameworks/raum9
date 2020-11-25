@@ -27,6 +27,15 @@ module.exports = {
             const postId = args.id;
             const voter = args.voter.name;
             return dataSources.postsDataStore.upvotePost(postId, voter);
+        },
+        signup: async (parent, args, {dataSources}) => {
+            const {name, email, password} = args;
+            const createdUser = dataSources.userDataStore.createUser(name, email, password);
+            return dataSources.userDataStore.authenticateUser(createdUser.email, password);
+        },
+        login: async (parent, args, {dataSources}) => {
+            const {email, password} = args;
+            return dataSources.userDataStore.authenticateUser(email, password);
         }
     }
 };

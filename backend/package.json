@@ -10,7 +10,10 @@
     "apollo-datasource": "^0.7.2",
     "apollo-datasource-rest": "^0.9.5",
     "apollo-server": "^2.19.0",
-    "graphql": "^15.4.0"
+    "apollo-server-errors": "^2.4.2",
+    "bcrypt": "^5.0.0",
+    "graphql": "^15.4.0",
+    "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
     "apollo-server-testing": "^2.19.0",
