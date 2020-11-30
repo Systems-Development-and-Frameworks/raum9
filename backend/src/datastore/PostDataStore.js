@@ -26,6 +26,7 @@ class PostDataStore extends DataSource {
     }
 
     initialize({context}) {
+        this.currentUser = context.user?.uid;
     }
 
     allPosts() {
@@ -44,11 +45,13 @@ class PostDataStore extends DataSource {
         return post;
     }
 
-    upvotePost(id, user) {
+    upvotePost(id) {
         let post = this.posts.find(post => post.id === parseInt(id));
+
         if (post !== undefined) {
-            if (!post.votes.includes(user)) {
-                post.votes.push(user);
+            if (this.currentUser &&
+                !post.votes.includes(this.currentUser)) {
+                post.votes.push(this.currentUser);
             }
             return post;
         }

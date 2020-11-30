@@ -25,8 +25,7 @@ module.exports = {
         },
         upvote: async (parent, args, {dataSources}) => {
             const postId = args.id;
-            const voter = args.voter.name;
-            return dataSources.postsDataStore.upvotePost(postId, voter);
+            return dataSources.postsDataStore.upvotePost(postId);
         },
         signup: async (parent, args, {dataSources}) => {
             const {name, email, password} = args;

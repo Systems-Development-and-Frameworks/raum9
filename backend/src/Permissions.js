@@ -17,7 +17,9 @@ const permissions = shield({
     Query: {
         posts: isAuthenticated
     },
-    Mutation: {}
+    Mutation: {
+        upvote: isAuthenticated
+    }
 });
 
 module.exports = permissions;
