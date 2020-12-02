@@ -7,7 +7,7 @@ module.exports = {
     Post: {
         author: (parent, args, {dataSources}) => dataSources.userDataStore.getUserById(parent.author_id),
         votes: async (parent, args, {dataSources}) => {
-            return parent.votes.length;
+            return dataSources.postsDataStore.getVoteCount(parent);
         }
     },
 
@@ -25,6 +25,10 @@ module.exports = {
         upvote: async (parent, args, {dataSources}) => {
             const postId = args.id;
             return dataSources.postsDataStore.upvotePost(postId);
+        },
+        downvote: async (parent, args, {dataSources}) => {
+            const postId = args.id;
+            return dataSources.postsDataStore.downvotePost(postId);
         },
         delete: async (parent, args, {dataSources}) => {
             const postId = args.id;

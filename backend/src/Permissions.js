@@ -36,6 +36,7 @@ const permissions = shield({
     Mutation: {
         write: isAuthenticated,
         upvote: isAuthenticated,
+        downvote: isAuthenticated,
         delete: isAuthenticated
     }
 });

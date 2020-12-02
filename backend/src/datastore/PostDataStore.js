@@ -11,15 +11,13 @@ class PostDataStore extends DataSource {
             {
                 id: 1,
                 title: 'Message 1',
-                votes: [],
+                votes: new Map(),
                 author_id: 1
             },
             {
                 id: 2,
                 title: 'Message 2',
-                votes: [
-                    1
-                ],
+                votes: new Map([[1, true]]),
                 author_id: 2
             }
 
@@ -38,6 +36,10 @@ class PostDataStore extends DataSource {
         return this.posts.find(post => post.id === parseInt(id));
     }
 
+    getVoteCount(post) {
+        return Array.from(post.votes).map(([_, count]) => count ? 1 : -1).reduce((a, b) => a + b, 0)
+    }
+
     createPost(title) {
         let post = {
             id: Math.max(...this.posts.map(post => post.id), 0) + 1,
@@ -50,13 +52,24 @@ class PostDataStore extends DataSource {
     }
 
     upvotePost(id) {
+        return this.vote(id, true);
+    }
+
+    downvotePost(id) {
+        return this.vote(id, false);
+    }
+
+    /**
+     * A generic function for upvote and downvote of a post.
+     * @param id id of the post
+     * @param state a boolean value (true: upvote, false: downvote)
+     * @returns {Post|null}
+     */
+    vote(id, state) {
         let post = this.posts.find(post => post.id === parseInt(id));
 
         if (post) {
-            if (this.currentUser &&
-                !post.votes.includes(this.currentUser)) {
-                post.votes.push(this.currentUser);
-            }
+            post.votes.set(this.currentUser, state);
             return post;
         }
         return null

@@ -23,9 +23,7 @@ module.exports = gql`
     type Mutation {
         write(post: PostInput!): Post
         upvote(id: ID!): Post
-        # OPTIONAL
-        # downvote(id: ID!): Post
-        
+        downvote(id: ID!): Post
         delete(id: ID!): Post
 
         """

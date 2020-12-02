@@ -69,6 +69,16 @@ const MUTATE_UPVOTE = gql`
     }
 `;
 
+const MUTATE_DOWNVOTE = gql`
+    mutation($id: ID!) {
+        downvote(id: $id) {
+            id
+            title
+            votes
+        }
+    }
+`;
+
 const MUTATE_DELETE = gql`
     mutation($id: ID!) {
         delete(id: $id) {
@@ -100,13 +110,19 @@ describe('server', () => {
             {
                 id: 1,
                 title: 'Test Message 1',
-                votes: [],
+                votes: new Map(),
                 author_id: 1
             },
             {
                 id: 2,
                 title: 'Test Message 2',
-                votes: [1],
+                votes: new Map([[1, true]]),
+                author_id: 2
+            },
+            {
+                id: 3,
+                title: 'Test Message 3',
+                votes: new Map([[1, false]]),
                 author_id: 2
             }
         ]);
@@ -127,7 +143,8 @@ describe('server', () => {
             const res = await query({query: GET_POSTS, variables: {id: 1}});
             expect(res.data.posts).toEqual([
                 {title: 'Test Message 1', votes: 0},
-                {title: 'Test Message 2', votes: 1}
+                {title: 'Test Message 2', votes: 1},
+                {title: 'Test Message 3', votes: -1}
             ]);
         });
     });
@@ -201,10 +218,6 @@ describe('server', () => {
      */
 
     describe('actions where logging in is needed', () => {
-        /*
-        Write
-         */
-
         describe('write(post: $postInput)', () => {
             const opts = {
                 mutation: MUTATE_WRITE,
@@ -222,7 +235,7 @@ describe('server', () => {
                     errors: undefined,
                     data: {
                         write: {
-                            id: '3',
+                            id: '4',
                             title: 'New Post',
                             author: {name: 'Max Mustermann'}
                         }
@@ -230,12 +243,9 @@ describe('server', () => {
                 });
             });
         });
-        /*
-        Upvote test
-         */
 
         describe('upvote(id: ID!)', () => {
-            it('adds a new votes', async () => {
+            it('adds a new upvote', async () => {
                 const {mutate} = createTestClient(server);
 
                 const res = await mutate({
@@ -273,6 +283,51 @@ describe('server', () => {
                             id: '2',
                             title: 'Test Message 2',
                             votes: 1
+                        }
+                    }
+                });
+            });
+        });
+
+        describe('downvote(id: ID!)', () => {
+            it('adds a new downvote', async () => {
+                const {mutate} = createTestClient(server);
+
+                const res = await mutate({
+                    mutation: MUTATE_DOWNVOTE,
+                    variables: {
+                        id: 1
+                    }
+                });
+
+                await expect(res).toMatchObject({
+                    errors: undefined,
+                    data: {
+                        downvote: {
+                            id: '1',
+                            title: 'Test Message 1',
+                            votes: -1
+                        }
+                    }
+                });
+            });
+
+            it('not a new vote if user already voted', async () => {
+                const {mutate} = createTestClient(server);
+
+                const res = await mutate({
+                    mutation: MUTATE_DOWNVOTE,
+                    variables: {
+                        id: 3
+                    }
+                });
+                await expect(res).toMatchObject({
+                    errors: undefined,
+                    data: {
+                        downvote: {
+                            id: '3',
+                            title: 'Test Message 3',
+                            votes: -1
                         }
                     }
                 });
