@@ -18,10 +18,9 @@ module.exports = {
         }
     },
     Mutation: {
-        write: async (parent, args, {dataSources}) => {
+        write: async (parent, args, {user, dataSources}) => {
             const title = args.post.title;
-            const authorId = args.post.author.name;
-            return dataSources.postsDataStore.createPost(title, authorId);
+            return dataSources.postsDataStore.createPost(title);
         },
         upvote: async (parent, args, {dataSources}) => {
             const postId = args.id;

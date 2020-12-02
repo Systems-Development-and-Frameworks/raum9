@@ -17,7 +17,7 @@ class PostDataStore extends DataSource {
                 id: 2,
                 title: 'Message 2',
                 votes: [
-                    'Max Mustermann'
+                    1
                 ],
                 author_id: 2
             }
@@ -33,22 +33,21 @@ class PostDataStore extends DataSource {
         return this.posts;
     }
 
-    createPost(title, author_id) {
+    createPost(title) {
         let post = {
             id: Math.max(...this.posts.map(post => post.id), 0) + 1,
             title: title,
             votes: [],
-            author_id: author_id
+            author_id: this.currentUser
         }
         this.posts.push(post);
-        this.userDataStore.createIfNotExists(author_id);
         return post;
     }
 
     upvotePost(id) {
         let post = this.posts.find(post => post.id === parseInt(id));
 
-        if (post !== undefined) {
+        if (post) {
             if (this.currentUser &&
                 !post.votes.includes(this.currentUser)) {
                 post.votes.push(this.currentUser);

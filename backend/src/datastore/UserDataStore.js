@@ -1,4 +1,4 @@
-const {UserInputError} = require('apollo-server-errors');
+const {UserInputError, AuthenticationError} = require('apollo-server-errors');
 const {DataSource} = require('apollo-datasource');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -83,11 +83,11 @@ class UserDataStore extends DataSource {
         const isAuthenticated = bcrypt.compareSync(password, user.password);
 
         if (!isAuthenticated) {
-            return null;
+            throw new AuthenticationError('must authenticate');
         }
 
         const secret = process.env.JWT_SECRET;
-        if (secret === null || secret === '') {
+        if (!secret) {
             console.error('JWT_SECRET missing in env');
             return null;
         }
