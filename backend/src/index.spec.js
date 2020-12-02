@@ -350,7 +350,7 @@ describe('server', () => {
                     data: {
                         delete: {
                             id: '1',
-                            title: 'Test Message 1',
+                            title: 'Test Message 1'
                         }
                     }
                 });
