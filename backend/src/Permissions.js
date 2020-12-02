@@ -13,7 +13,23 @@ const isAuthenticated = rule({cache: 'contextual'})(
     }
 );
 
+const isOwner = rule({})(
+    async ({ email }, args, ctx, info) => {
+        const token = ctx.user;
+        if (token) {
+            const user = ctx.dataSources.userDataStore.getUserById(token.uid);
+            if (user && user.email === email) {
+                return true;
+            }
+        }
+        return false;
+    }
+);
+
 const permissions = shield({
+    User: {
+        email: isOwner
+    },
     Query: {
         posts: isAuthenticated
     },

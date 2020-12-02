@@ -2,7 +2,7 @@ const {ApolloServer} = require('apollo-server');
 
 const typeDefs = require('./TypeDefs');
 const resolvers = require('./Resolvers');
-const context = require('./AuthenticationContent');
+const _context = require('./AuthenticationContent');
 const PostDataStore = require('./datastore/PostDataStore');
 const UserDataStore = require('./datastore/UserDataStore');
 
@@ -22,12 +22,12 @@ const schema = applyMiddleware(
 );
 
 // default/prod DataSources
-const dataSources = () => ({
+const _dataSources = () => ({
     userDataStore: userDataStore,
     postsDataStore: postDataStore
 })
 
-const createServer =(context = context, dataSources = dataSources) => (
+const createServer =(context = _context, dataSources = _dataSources) => (
     new ApolloServer({
         schema,
         context: context,

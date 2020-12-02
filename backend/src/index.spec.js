@@ -27,6 +27,15 @@ const GET_USERS = gql`
     }
 `;
 
+const GET_USERS_FORBIDDEN = gql`
+    query get_user {
+        users {
+            name
+            email
+        }
+    }
+`;
+
 const MUTATE_LOGIN = gql`
     mutation($email: String!, $password: String!) {
         login(email: $email, password: $password)
@@ -72,6 +81,12 @@ describe('server', () => {
                 name: 'Max Mustermann',
                 email: 'test@test.com',
                 password: bcrypt.hashSync('12345678', 10)
+            },
+            {
+                id: 2,
+                name: 'Martin Mustermann',
+                email: 'martin@test.com',
+                password: bcrypt.hashSync('12345678', 10)
             }
         ]);
         const postDataStore = new PostDataStore(userDataStore, [
@@ -102,8 +117,8 @@ describe('server', () => {
         it('return all posts', async () => {
             const {query} = createTestClient(server);
 
-            const {data} = await query({query: GET_POSTS, variables: {id: 1}});
-            expect(data.posts).toEqual([
+            const res = await query({query: GET_POSTS, variables: {id: 1}});
+            expect(res.data.posts).toEqual([
                 {title: 'Test Message 1', votes: 0},
                 {title: 'Test Message 2', votes: 1}
             ]);
@@ -114,8 +129,18 @@ describe('server', () => {
         it('return all user', async () => {
             const {query} = createTestClient(server);
 
-            const {data} = await query({query: GET_USERS});
-            expect(data.users).toEqual([{name: 'Max Mustermann'}]);
+            const res = await query({query: GET_USERS});
+            expect(res.data.users).toEqual([
+                {name: 'Max Mustermann'},
+                {name: 'Martin Mustermann'},
+                ]);
+        });
+
+        it('return all user forbidden', async () => {
+            const {query} = createTestClient(server);
+
+            const res = await query({query: GET_USERS_FORBIDDEN});
+            expect(res.errors).toBeTruthy();
         });
     });
 
@@ -124,8 +149,8 @@ describe('server', () => {
             const opts = {
                 mutation: MUTATE_SIGNUP,
                 variables: {
-                    name: 'Martin Mustermann',
-                    email: 'martin@test.com',
+                    name: 'Martina Mustermann',
+                    email: 'martina@test.com',
                     password: '12345678'
                 }
             };
