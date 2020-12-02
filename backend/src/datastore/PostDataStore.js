@@ -72,7 +72,7 @@ class PostDataStore extends DataSource {
             post.votes.set(this.currentUser, state);
             return post;
         }
-        return null
+        throw new UserInputError('Post not found');
     }
 
     deletePost(id) {

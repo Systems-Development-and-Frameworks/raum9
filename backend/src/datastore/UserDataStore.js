@@ -77,7 +77,7 @@ class UserDataStore extends DataSource {
     authenticateUser(email, password) {
         const user = this.getUserByMail(email)
         if (!user) {
-            return null;
+            throw new AuthenticationError('User not found');
         }
 
         const isAuthenticated = bcrypt.compareSync(password, user.password);

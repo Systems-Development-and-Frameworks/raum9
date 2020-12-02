@@ -1,4 +1,4 @@
-const {rule, shield} = require('graphql-shield');
+const {rule, shield, not} = require('graphql-shield');
 
 const isAuthenticated = rule({cache: 'contextual'})(
     async (parent, args, ctx, info) => {
