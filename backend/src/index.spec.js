@@ -2,10 +2,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const {createTestClient} = require('apollo-server-testing');
-const {ApolloServer, gql} = require('apollo-server');
+const {gql} = require('apollo-server');
 
-const typeDefs = require('./TypeDefs');
-const resolvers = require('./Resolvers');
 const PostDataStore = require('./datastore/PostDataStore');
 const UserDataStore = require('./datastore/UserDataStore');
 
@@ -105,7 +103,7 @@ describe('server', () => {
         ]);
 
         server = createServer(
-            () => ({ user: {uid: 1}}),
+            () => ({user: {uid: 1}}),
             () => ({
                 userDataStore: userDataStore,
                 postsDataStore: postDataStore
@@ -132,8 +130,8 @@ describe('server', () => {
             const res = await query({query: GET_USERS});
             expect(res.data.users).toEqual([
                 {name: 'Max Mustermann'},
-                {name: 'Martin Mustermann'},
-                ]);
+                {name: 'Martin Mustermann'}
+            ]);
         });
 
         it('return all user forbidden', async () => {
@@ -157,7 +155,7 @@ describe('server', () => {
             const {mutate} = createTestClient(server);
 
             const res = await mutate(opts);
-            expect(jwt.verify(res.data.signup,process.env.JWT_SECRET)).toBeTruthy();
+            expect(jwt.verify(res.data.signup, process.env.JWT_SECRET)).toBeTruthy();
         });
     });
 
@@ -173,7 +171,7 @@ describe('server', () => {
             const {mutate} = createTestClient(server);
 
             const res = await mutate(opts);
-            expect(jwt.verify(res.data.login,process.env.JWT_SECRET)).toBeTruthy();
+            expect(jwt.verify(res.data.login, process.env.JWT_SECRET)).toBeTruthy();
         });
         it('login user failed', async () => {
             const opts = {
@@ -191,13 +189,12 @@ describe('server', () => {
     });
 
     /*
-        LoggedIn Testcases
+    LoggedIn Testcases
      */
 
     describe('actions where logging in is needed', () => {
-
         /*
-            Write
+        Write
          */
 
         describe('write(post: $postInput)', () => {
@@ -205,17 +202,14 @@ describe('server', () => {
                 mutation: MUTATE_WRITE,
                 variables: {
                     postInput: {
-                        title: 'New Post',
+                        title: 'New Post'
                     }
                 }
             };
 
             it('writes a post', async () => {
-
                 const {mutate} = createTestClient(server);
-
                 const res = await mutate(opts);
-
                 expect(res).toMatchObject({
                     errors: undefined,
                     data: {
@@ -239,7 +233,7 @@ describe('server', () => {
                 const res = await mutate({
                     mutation: MUTATE_UPVOTE,
                     variables: {
-                        id: 1,
+                        id: 1
                     }
                 });
 
@@ -276,5 +270,5 @@ describe('server', () => {
                 });
             });
         });
-    })
+    });
 });

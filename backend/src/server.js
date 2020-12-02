@@ -25,9 +25,9 @@ const schema = applyMiddleware(
 const _dataSources = () => ({
     userDataStore: userDataStore,
     postsDataStore: postDataStore
-})
+});
 
-const createServer =(context = _context, dataSources = _dataSources) => (
+const createServer = (context = _context, dataSources = _dataSources) => (
     new ApolloServer({
         schema,
         context: context,
@@ -35,4 +35,4 @@ const createServer =(context = _context, dataSources = _dataSources) => (
     })
 );
 
-module.exports = createServer
+module.exports = createServer;
