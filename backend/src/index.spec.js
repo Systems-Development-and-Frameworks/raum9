@@ -69,6 +69,16 @@ const MUTATE_UPVOTE = gql`
     }
 `;
 
+const MUTATE_DELETE = gql`
+    mutation($id: ID!) {
+        delete(id: $id) {
+            id
+            title
+        }
+    }
+`;
+
+
 let server;
 
 describe('server', () => {
@@ -92,13 +102,13 @@ describe('server', () => {
                 id: 1,
                 title: 'Test Message 1',
                 votes: [],
-                author_id: 'Max Mustermann'
+                author_id: 1
             },
             {
                 id: 2,
                 title: 'Test Message 2',
                 votes: [1],
-                author_id: 'Max Mustermann'
+                author_id: 2
             }
         ]);
 
@@ -268,6 +278,42 @@ describe('server', () => {
                         }
                     }
                 });
+            });
+        });
+
+        describe('delete(id: ID!)', () => {
+            it('deletes own post', async () => {
+                const {mutate} = createTestClient(server);
+
+                const res = await mutate({
+                    mutation: MUTATE_DELETE,
+                    variables: {
+                        id: 1
+                    }
+                });
+
+                await expect(res).toMatchObject({
+                    errors: undefined,
+                    data: {
+                        delete: {
+                            id: '1',
+                            title: 'Test Message 1',
+                        }
+                    }
+                });
+            });
+
+            it('deletes foreign post', async () => {
+                const {mutate} = createTestClient(server);
+
+                const res = await mutate({
+                    mutation: MUTATE_DELETE,
+                    variables: {
+                        id: 2
+                    }
+                });
+
+                expect(res.errors).toBeTruthy();
             });
         });
     });

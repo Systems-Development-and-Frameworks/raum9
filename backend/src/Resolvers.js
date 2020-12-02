@@ -26,6 +26,10 @@ module.exports = {
             const postId = args.id;
             return dataSources.postsDataStore.upvotePost(postId);
         },
+        delete: async (parent, args, {dataSources}) => {
+            const postId = args.id;
+            return dataSources.postsDataStore.deletePost(postId);
+        },
         signup: async (parent, args, {dataSources}) => {
             const {name, email, password} = args;
             const createdUser = dataSources.userDataStore.createUser(name, email, password);

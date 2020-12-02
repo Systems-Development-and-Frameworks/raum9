@@ -1,4 +1,5 @@
 const {DataSource} = require('apollo-datasource');
+const {UserInputError, AuthenticationError} = require('apollo-server-errors');
 
 class PostDataStore extends DataSource {
 
@@ -33,6 +34,10 @@ class PostDataStore extends DataSource {
         return this.posts;
     }
 
+    getPost(id) {
+        return this.posts.find(post => post.id === parseInt(id));
+    }
+
     createPost(title) {
         let post = {
             id: Math.max(...this.posts.map(post => post.id), 0) + 1,
@@ -55,6 +60,20 @@ class PostDataStore extends DataSource {
             return post;
         }
         return null
+    }
+
+    deletePost(id) {
+        let post = this.getPost(id);
+        if (!post) {
+            throw new UserInputError('Post not found for id ' + id);
+        }
+
+        if (post.author_id !== this.currentUser) {
+            throw new AuthenticationError('You are not the author of the post');
+        }
+
+        this.posts = this.posts.filter(post => post.id !== id);
+        return post;
     }
 }
 

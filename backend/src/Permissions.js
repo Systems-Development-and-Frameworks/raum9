@@ -13,7 +13,7 @@ const isAuthenticated = rule({cache: 'contextual'})(
     }
 );
 
-const isOwner = rule({})(
+const isOwnUser = rule({})(
     async ({ email }, args, ctx, info) => {
         const token = ctx.user;
         if (token) {
@@ -28,14 +28,15 @@ const isOwner = rule({})(
 
 const permissions = shield({
     User: {
-        email: isOwner
+        email: isOwnUser
     },
     Query: {
         posts: isAuthenticated
     },
     Mutation: {
         write: isAuthenticated,
-        upvote: isAuthenticated
+        upvote: isAuthenticated,
+        delete: isAuthenticated
     }
 });
 
