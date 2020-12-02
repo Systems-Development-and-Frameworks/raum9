@@ -2,7 +2,7 @@ const {ApolloServer} = require('apollo-server');
 
 const typeDefs = require('./TypeDefs');
 const resolvers = require('./Resolvers');
-const _context = require('./AuthenticationContent');
+const _context = require('./AuthenticationContext');
 const PostDataStore = require('./datastore/PostDataStore');
 const UserDataStore = require('./datastore/UserDataStore');
 
