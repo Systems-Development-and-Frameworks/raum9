@@ -78,7 +78,6 @@ const MUTATE_DELETE = gql`
     }
 `;
 
-
 let server;
 
 describe('server', () => {
@@ -197,7 +196,6 @@ describe('server', () => {
             expect(res.errors).toBeTruthy();
         });
     });
-
     /*
     LoggedIn Testcases
      */
