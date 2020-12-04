@@ -52,11 +52,11 @@ class PostDataStore extends DataSource {
     }
 
     upvotePost(id) {
-        return this.vote(id, true);
+        return this.#vote(id, true);
     }
 
     downvotePost(id) {
-        return this.vote(id, false);
+        return this.#vote(id, false);
     }
 
     /**
@@ -65,7 +65,7 @@ class PostDataStore extends DataSource {
      * @param state a boolean value (true: upvote, false: downvote)
      * @returns {Post|null}
      */
-    vote(id, state) {
+    #vote(id, state) {
         let post = this.posts.find(post => post.id === parseInt(id));
 
         if (post) {
