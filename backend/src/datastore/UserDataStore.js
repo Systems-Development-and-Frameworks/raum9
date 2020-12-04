@@ -3,22 +3,23 @@ const {DataSource} = require('apollo-datasource');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+class User {
+    constructor(id, name, email, password = null) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+}
+
 class UserDataStore extends DataSource {
 
     constructor(users = null) {
         super()
 
         this.users = users ?? [
-            {
-                id: 1,
-                name: 'Max Mustermann',
-                email: 'max@mustermann.de'
-            },
-            {
-                id: 2,
-                name: 'Max Mustermann2',
-                email: 'max@mustermann2.de'
-            }
+            new User(1, 'Max Mustermann', 'max@mustermann.de'),
+            new User(2, 'Max Mustermann2', 'max@mustermann2.de'),
         ]
     }
 
@@ -37,25 +38,12 @@ class UserDataStore extends DataSource {
         return this.users;
     }
 
-    createIfNotExists(name) {
-        if (this.getUserById(name) === undefined) {
-            this.users.push({
-                name: name
-            });
-        }
-    }
-
     createUser(name, email, password) {
         this.validateNewUserInput(email, password);
 
-        const hashedPassword = bcrypt.hashSync(password, 10); // TODO Maybe async
+        const hashedPassword = bcrypt.hashSync(password, 10);
+        const user = new User(this.createNewUserId(), name, email, hashedPassword);
 
-        const user = {
-            id: this.createNewUserId(),
-            name: name,
-            email: email,
-            password: hashedPassword
-        };
         this.users.push(user);
         return user;
     }
@@ -96,4 +84,4 @@ class UserDataStore extends DataSource {
     }
 }
 
-module.exports = UserDataStore
+module.exports = {UserDataStore, User}

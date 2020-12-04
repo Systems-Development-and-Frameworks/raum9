@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken');
 const {createTestClient} = require('apollo-server-testing');
 const {gql} = require('apollo-server');
 
-const PostDataStore = require('./datastore/PostDataStore');
-const UserDataStore = require('./datastore/UserDataStore');
+const {PostDataStore, Post} = require('./datastore/PostDataStore');
+const {UserDataStore, User} = require('./datastore/UserDataStore');
 
 const createServer = require('./server');
 
@@ -93,38 +93,13 @@ let server;
 describe('server', () => {
     beforeEach(() => {
         const userDataStore = new UserDataStore([
-            {
-                id: 1,
-                name: 'Max Mustermann',
-                email: 'test@test.com',
-                password: bcrypt.hashSync('12345678', 10)
-            },
-            {
-                id: 2,
-                name: 'Martin Mustermann',
-                email: 'martin@test.com',
-                password: bcrypt.hashSync('12345678', 10)
-            }
+            new User(1, 'Max Mustermann', 'test@test.com', bcrypt.hashSync('12345678', 10)),
+            new User(2, 'Martin Mustermann', 'martin@test.com', bcrypt.hashSync('12345678', 10))
         ]);
         const postDataStore = new PostDataStore(userDataStore, [
-            {
-                id: 1,
-                title: 'Test Message 1',
-                votes: new Map(),
-                author_id: 1
-            },
-            {
-                id: 2,
-                title: 'Test Message 2',
-                votes: new Map([[1, true]]),
-                author_id: 2
-            },
-            {
-                id: 3,
-                title: 'Test Message 3',
-                votes: new Map([[1, false]]),
-                author_id: 2
-            }
+            new Post(1, 'Test Message 1', 1),
+            new Post(2, 'Test Message 2', 2, new Map([[1, true]])),
+            new Post(3, 'Test Message 3', 2, new Map([[1, false]]))
         ]);
 
         server = createServer(

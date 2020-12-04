@@ -1,6 +1,15 @@
 const {DataSource} = require('apollo-datasource');
 const {UserInputError, AuthenticationError} = require('apollo-server-errors');
 
+class Post {
+    constructor(id, title, author_id, votes = new Map()) {
+        this.id = id
+        this.title = title
+        this.author_id = author_id
+        this.votes = votes
+    }
+}
+
 class PostDataStore extends DataSource {
 
     constructor(userDataStore, posts = null) {
@@ -8,19 +17,8 @@ class PostDataStore extends DataSource {
 
         this.userDataStore = userDataStore;
         this.posts = posts ?? [
-            {
-                id: 1,
-                title: 'Message 1',
-                votes: new Map(),
-                author_id: 1
-            },
-            {
-                id: 2,
-                title: 'Message 2',
-                votes: new Map([[1, true]]),
-                author_id: 2
-            }
-
+            new Post(1, 'Message 1', 1),
+            new Post(2, 'Message 2', 2, new Map([[1, true]]))
         ];
     }
 
@@ -28,6 +26,10 @@ class PostDataStore extends DataSource {
         this.currentUser = context.user?.uid;
     }
 
+    /**
+     * Get all Posts.
+     * @returns Post[]
+     */
     allPosts() {
         return this.posts;
     }
@@ -41,12 +43,7 @@ class PostDataStore extends DataSource {
     }
 
     createPost(title) {
-        let post = {
-            id: Math.max(...this.posts.map(post => post.id), 0) + 1,
-            title: title,
-            votes: [],
-            author_id: this.currentUser
-        }
+        let post = new Post(Math.max(...this.posts.map(post => post.id), 0) + 1, title, this.currentUser)
         this.posts.push(post);
         return post;
     }
@@ -90,4 +87,4 @@ class PostDataStore extends DataSource {
     }
 }
 
-module.exports = PostDataStore
+module.exports = {PostDataStore, Post}

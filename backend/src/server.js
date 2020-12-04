@@ -3,8 +3,8 @@ const {ApolloServer} = require('apollo-server');
 const typeDefs = require('./TypeDefs');
 const resolvers = require('./Resolvers');
 const _context = require('./AuthenticationContext');
-const PostDataStore = require('./datastore/PostDataStore');
-const UserDataStore = require('./datastore/UserDataStore');
+const {PostDataStore} = require('./datastore/PostDataStore');
+const {UserDataStore} = require('./datastore/UserDataStore');
 
 const {applyMiddleware} = require('graphql-middleware');
 const {makeExecutableSchema} = require('graphql-tools');
