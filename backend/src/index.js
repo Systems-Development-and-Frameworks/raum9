@@ -1,7 +1,7 @@
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
 const server = require('./server');
 
-dotenv.config()
+dotenv.config();
 
 // The `listen` method launches a web server.
 server().listen().then(({url}) => {
