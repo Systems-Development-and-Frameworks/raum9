@@ -26,7 +26,8 @@ const isOwnUser = rule({})(
     }
 );
 
-const permissions = shield({
+const permissions = shield(
+    {
         User: {
             email: isOwnUser
         },
