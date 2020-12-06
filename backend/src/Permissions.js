@@ -14,7 +14,7 @@ const isAuthenticated = rule({cache: 'contextual'})(
 );
 
 const isOwnUser = rule({})(
-    async ({ email }, args, ctx, info) => {
+    async ({email}, args, ctx, info) => {
         const token = ctx.user;
         if (token) {
             const user = ctx.dataSources.userDataStore.getUserById(token.uid);
@@ -27,18 +27,22 @@ const isOwnUser = rule({})(
 );
 
 const permissions = shield({
-    User: {
-        email: isOwnUser
+        User: {
+            email: isOwnUser
+        },
+        Query: {
+            posts: isAuthenticated
+        },
+        Mutation: {
+            write: isAuthenticated,
+            upvote: isAuthenticated,
+            downvote: isAuthenticated,
+            delete: isAuthenticated
+        }
     },
-    Query: {
-        posts: isAuthenticated
-    },
-    Mutation: {
-        write: isAuthenticated,
-        upvote: isAuthenticated,
-        downvote: isAuthenticated,
-        delete: isAuthenticated
+    {
+        allowExternalErrors: true
     }
-});
+);
 
 module.exports = permissions;
