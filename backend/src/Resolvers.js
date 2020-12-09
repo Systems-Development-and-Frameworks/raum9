@@ -7,7 +7,7 @@ module.exports = {
     Post: {
         author: (parent, args, {dataSources}) => dataSources.userDataStore.getUserById(parent.author_id),
         votes: async (parent, args, {dataSources}) => {
-            return parent.votes.length;
+            return dataSources.postsDataStore.getVoteCount(parent);
         }
     },
 
@@ -18,15 +18,30 @@ module.exports = {
         }
     },
     Mutation: {
-        write: async (parent, args, {dataSources}) => {
+        write: async (parent, args, {user, dataSources}) => {
             const title = args.post.title;
-            const authorId = args.post.author.name;
-            return dataSources.postsDataStore.createPost(title, authorId);
+            return dataSources.postsDataStore.createPost(title);
         },
         upvote: async (parent, args, {dataSources}) => {
             const postId = args.id;
-            const voter = args.voter.name;
-            return dataSources.postsDataStore.upvotePost(postId, voter);
+            return dataSources.postsDataStore.upvotePost(postId);
+        },
+        downvote: async (parent, args, {dataSources}) => {
+            const postId = args.id;
+            return dataSources.postsDataStore.downvotePost(postId);
+        },
+        delete: async (parent, args, {dataSources}) => {
+            const postId = args.id;
+            return dataSources.postsDataStore.deletePost(postId);
+        },
+        signup: async (parent, args, {dataSources}) => {
+            const {name, email, password} = args;
+            const createdUser = dataSources.userDataStore.createUser(name, email, password);
+            return dataSources.userDataStore.authenticateUser(createdUser.email, password);
+        },
+        login: async (parent, args, {dataSources}) => {
+            const {email, password} = args;
+            return dataSources.userDataStore.authenticateUser(email, password);
         }
     }
 };

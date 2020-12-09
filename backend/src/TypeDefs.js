@@ -9,7 +9,9 @@ module.exports = gql`
     }
 
     type User {
-        name: ID!
+        id: ID!
+        name: String!
+        email: String!
         posts: [Post]
     }
 
@@ -20,21 +22,22 @@ module.exports = gql`
 
     type Mutation {
         write(post: PostInput!): Post
+        upvote(id: ID!): Post
+        downvote(id: ID!): Post
+        delete(id: ID!): Post
 
-        # ⚠️ FIXME in exercise #4
-        # mock voter until we have authentication
-        upvote(id: ID!, voter: UserInput!): Post
+        """
+        returns a signed JWT or null
+        """
+        login(email: String!, password: String!): String
+
+        """
+        returns a signed JWT or null
+        """
+        signup(name: String!, email: String!, password: String!): String
     }
 
     input PostInput {
         title: String!
-
-        # ⚠️ FIXME in exercise #4
-        # mock author until we have authentication
-        author: UserInput!
-    }
-
-    input UserInput {
-        name: String!
     }
 `;
