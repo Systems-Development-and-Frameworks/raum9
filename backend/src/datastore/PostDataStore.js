@@ -1,5 +1,6 @@
 const {DataSource} = require('apollo-datasource');
 const {UserInputError, AuthenticationError} = require('apollo-server-errors');
+const neode = require('../database/NeodeConfiguration');
 
 class Post {
     constructor(id, title, author_id, votes = new Map()) {
@@ -7,6 +8,12 @@ class Post {
         this.title = title
         this.author_id = author_id
         this.votes = votes
+    }
+
+    static fromObject(data) {
+        let object = new Post(0, '', 0);
+        Object.assign(object, data);
+        return object;
     }
 }
 
@@ -24,14 +31,17 @@ class PostDataStore extends DataSource {
 
     initialize({context}) {
         this.currentUser = context.user?.uid;
+        this.driver = context.driver;
     }
 
     /**
      * Get all Posts.
      * @returns Post[]
      */
-    allPosts() {
-        return this.posts;
+    async allPosts() {
+        const nodes = await neode.all('Post');
+        if (!nodes) return null;
+        return nodes.map(node => Post.fromObject({ ...node.properties(), node }));
     }
 
     getPost(id) {

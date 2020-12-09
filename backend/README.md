@@ -15,6 +15,7 @@ JWT_SECRET=<ypur secret>
 ```
 
 To run the server:
+
 ```bash
 npm run server
 ```
@@ -24,3 +25,7 @@ npm run server
 ```bash
 npm run lint
 ```
+
+# Task 1: Architektur
+
+Wir haben uns für "Neo4J and neo4j-graphql-js" entschieden, um neo4j besser zu lernen. Also aus pedagogischen Gründen.
