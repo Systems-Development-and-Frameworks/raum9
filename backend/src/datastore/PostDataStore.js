@@ -41,11 +41,13 @@ class PostDataStore extends DataSource {
     async allPosts() {
         const nodes = await neode.all('Post');
         if (!nodes) return null;
-        return nodes.map(node => Post.fromObject({ ...node.properties(), node }));
+        return nodes.map(node => Post.fromObject({...node.properties(), node}));
     }
 
-    getPost(id) {
-        return this.posts.find(post => post.id === parseInt(id));
+    async getPost(id) {
+        const node = await neode.findById('Post', parseInt(id));
+        if (!node) return null;
+        return Post.fromObject({...node.properties(), node});
     }
 
     getVoteCount(post) {
@@ -82,8 +84,8 @@ class PostDataStore extends DataSource {
         throw new UserInputError('Post not found');
     }
 
-    deletePost(id) {
-        let post = this.getPost(id);
+    async deletePost(id) {
+        let post = await this.getPost(id);
         if (!post) {
             throw new UserInputError('Post not found for id ' + id);
         }
