@@ -36,8 +36,8 @@ module.exports = {
         },
         signup: async (parent, args, {dataSources}) => {
             const {name, email, password} = args;
-            const createdUser = dataSources.userDataStore.createUser(name, email, password);
-            return dataSources.userDataStore.authenticateUser(createdUser.email, password);
+            const createdUser = await dataSources.userDataStore.createUser(name, email, password);
+            return await dataSources.userDataStore.authenticateUser(createdUser.email, password);
         },
         login: async (parent, args, {dataSources}) => {
             const {email, password} = args;

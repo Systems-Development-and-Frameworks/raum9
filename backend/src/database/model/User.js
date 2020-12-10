@@ -10,10 +10,6 @@ module.exports = {
     },
     password: {
         type: 'string',
-        strip: true
-    },
-    hashedPassword: {
-        type: 'string',
         required: true
     }
 };

@@ -2,6 +2,7 @@ const {UserInputError, AuthenticationError} = require('apollo-server-errors');
 const {DataSource} = require('apollo-datasource');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const neode = require('../database/NeodeConfiguration');
 
 class User {
     constructor(id, name, email, password = null) {
@@ -9,6 +10,12 @@ class User {
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+    static fromObject(data) {
+        let object = new User(0, '', '');
+        Object.assign(object, data);
+        return object;
     }
 }
 
@@ -24,27 +31,35 @@ class UserDataStore extends DataSource {
     }
 
     initialize({context}) {
+        this.driver = context.driver;
     }
 
-    getUserById(id) {
-        return this.users.find(user => user.id === id);
+    async getUserById(id) {
+        const node = await neode.findById('User', parseInt(id));
+        if (!node) return null;
+        return User.fromObject({...node.properties(), node});
     }
 
-    getUserByMail(email) {
-        return this.users.find(user => user.email === email);
+    async getUserByMail(email) {
+        const node = await neode.first('User', 'email', email);
+        if (!node) return null;
+        return User.fromObject({...node.properties(), node});
     }
 
-    allUsers() {
-        return this.users;
+    async allUsers() {
+        const nodes = await neode.all('User');
+        if (!nodes) return null;
+        return nodes.map(node => User.fromObject({...node.properties(), node}));
     }
 
-    createUser(name, email, password) {
-        this.validateNewUserInput(email, password);
+    async createUser(name, email, password) {
+        await this.validateNewUserInput(email, password);
 
         const hashedPassword = bcrypt.hashSync(password, 10);
         const user = new User(this.createNewUserId(), name, email, hashedPassword);
 
-        this.users.push(user);
+        let node = await neode.create('User', user);
+        Object.assign(user, {...node.properties(), node});
         return user;
     }
 
@@ -52,18 +67,18 @@ class UserDataStore extends DataSource {
         return Math.max(...this.users.map(user => user.id), 0) + 1;
     }
 
-    validateNewUserInput(mail, password) {
+    async validateNewUserInput(mail, password) {
         if (!password.match(/.{8,}/)) {
             throw new UserInputError('Password too short');
         }
 
-        if (this.users.find(user => user.email === mail)) {
+        if (await this.getUserByMail(mail)) {
             throw new UserInputError('Mail Address in use');
         }
     }
 
-    authenticateUser(email, password) {
-        const user = this.getUserByMail(email)
+    async authenticateUser(email, password) {
+        const user = await this.getUserByMail(email)
         if (!user) {
             throw new AuthenticationError('User not found');
         }
