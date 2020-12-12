@@ -1,4 +1,4 @@
-const {rule, shield} = require('graphql-shield');
+const {shield, rule, deny, allow} = require('graphql-shield');
 
 const isAuthenticated = rule({cache: 'contextual'})(
     async (parent, args, ctx) => {
@@ -28,9 +28,14 @@ const permissions = shield(
             email: isOwnUser
         },
         Query: {
-            posts: isAuthenticated
+            '*': deny,
+            posts: isAuthenticated,
+            users: isAuthenticated
         },
         Mutation: {
+            '*': deny,
+            login: allow,
+            signup: allow,
             write: isAuthenticated,
             upvote: isAuthenticated,
             downvote: isAuthenticated,
