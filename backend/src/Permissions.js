@@ -6,18 +6,19 @@ const isAuthenticated = rule({cache: 'contextual'})(
         if (!token) {
             return false;
         }
-        return ctx.dataSources.userDataStore.getUserById(token.uid);
+        let user = await ctx.dataSources.userDataStore.getUserById(token.uid);
+        return !!user;
     }
 );
 
 const isOwnUser = rule({})(
-    async ({email}, args, ctx, info) => {
+    async (parent, args, ctx, info) => {
         const token = ctx.user;
         if (!token) {
             return false;
         }
-        const user = ctx.dataSources.userDataStore.getUserById(token.uid);
-        return user && user.email === email;
+        const user = await ctx.dataSources.userDataStore.getUserById(token.uid);
+        return user && user.email === parent.email;
     }
 );
 
