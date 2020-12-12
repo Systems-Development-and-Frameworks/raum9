@@ -113,9 +113,12 @@ describe('server', () => {
         const postDataStore = new PostDataStore(userDataStore);
         await postDataStore.createPosts([
             new Post({id: 1, title: 'Test Message 1', author: user1}),
-            new Post({id: 2, title: 'Test Message 2', author: user2}), // , new Map([[1, true]])
-            new Post({id: 3, title: 'Test Message 3', author: user2}) // , new Map([[1, false]])
+            new Post({id: 2, title: 'Test Message 2', author: user2}),
+            new Post({id: 3, title: 'Test Message 3', author: user2})
         ])
+
+        await postDataStore.vote(2, 1, user1);
+        await postDataStore.vote(3, -1, user1);
 
         server = createServer(
             () => ({user: {uid: 1}}),

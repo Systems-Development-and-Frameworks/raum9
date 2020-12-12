@@ -13,5 +13,15 @@ module.exports = {
         relationship: 'WROTE',
         direction: 'in',
         eager: true
+    },
+    votes: {
+        type: 'relationships',
+        target: 'User',
+        relationship: 'VOTE',
+        direction: 'in',
+        eager: true,
+        properties: {
+            count: 'int'
+        }
     }
 };

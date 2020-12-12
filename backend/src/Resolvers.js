@@ -18,7 +18,7 @@ module.exports = {
     },
     Mutation: {
         write: async (parent, args, {dataSources}) => {
-            return await dataSources.postsDataStore.createPostForCurrentUser(args.post.title);
+            return dataSources.postsDataStore.createPostForCurrentUser(args.post.title);
         },
         upvote: async (parent, args, {dataSources}) => {
             return dataSources.postsDataStore.upvotePost(args.id);

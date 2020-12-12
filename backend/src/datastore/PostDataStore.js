@@ -4,15 +4,16 @@ const neode = require('../database/NeodeConfiguration');
 const {User} = require('../datastore/UserDataStore');
 
 class Post {
-    constructor({id, title, author}) {
+    constructor({id, title, author, node = null}) {
         this.id = id
         this.title = title
         this.author = author
+        this.node = node;
     }
 
     static fromObject(data) {
         let author = User.fromObject(data.node.get('wrote').startNode().properties())
-        return new Post({id: data.id, title: data.title, author: author});
+        return new Post({id: data.id, title: data.title, author: author, node: data.node});
     }
 }
 
@@ -39,13 +40,14 @@ class PostDataStore extends DataSource {
     }
 
     async getPost(id) {
-        const node = await neode.findById('Post', parseInt(id));
+        const node = await neode.first('Post', 'id', parseInt(id));
         if (!node) return null;
         return Post.fromObject({...node.properties(), node});
     }
 
     getVoteCount(post) {
-        return Array.from(post.votes).map(([_, count]) => count ? 1 : -1).reduce((a, b) => a + b, 0)
+        let votes = post.node.get('votes')
+        return votes.map(vote => vote.properties().count).reduce((a, b) => a + b, 0);
     }
 
     async createPosts(posts) {
@@ -77,26 +79,29 @@ class PostDataStore extends DataSource {
         return parseInt(currentMaxId.records[0].get('post.id')) + 1;
     }
 
-    upvotePost(id) {
-        return this.#vote(id, true);
+    async upvotePost(id) {
+        let user = await this.userDataStore.getUserById(this.currentUser);
+        return this.vote(id, 1, user);
     }
 
-    downvotePost(id) {
-        return this.#vote(id, false);
+    async downvotePost(id) {
+        let user = await this.userDataStore.getUserById(this.currentUser);
+        return this.vote(id, -1, user);
     }
 
     /**
      * A generic function for upvote and downvote of a post.
      * @param id id of the post
-     * @param state a boolean value (true: upvote, false: downvote)
+     * @param count a number value of vote weight
+     * @param user a user class object that represents the voted user
      * @returns {Post|null}
      */
-    #vote(id, state) {
-        let post = this.posts.find(post => post.id === parseInt(id));
+    async vote(id, count, user) {
+        let post = await this.getPost(id);
 
         if (post) {
-            post.votes.set(this.currentUser, state);
-            return post;
+            await post.node.relateTo(user.node, 'votes', {count: count})
+            return await this.getPost(id);
         }
         throw new UserInputError('Post not found');
     }
