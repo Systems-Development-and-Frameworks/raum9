@@ -26,7 +26,7 @@ class UserDataStore extends DataSource {
     }
 
     async getUserById(id) {
-        const node = await neode.findById('User', parseInt(id));
+        const node = await neode.first('User', 'id', parseInt(id));
         if (!node) return null;
         return User.fromObject({...node.properties(), node});
     }
