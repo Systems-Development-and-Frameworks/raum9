@@ -21,15 +21,6 @@ class User {
 
 class UserDataStore extends DataSource {
 
-    constructor(users = null) {
-        super()
-
-        this.users = users ?? [
-            new User(1, 'Max Mustermann', 'max@mustermann.de'),
-            new User(2, 'Max Mustermann2', 'max@mustermann2.de'),
-        ]
-    }
-
     initialize({context}) {
         this.driver = context.driver;
     }
@@ -56,15 +47,19 @@ class UserDataStore extends DataSource {
         await this.validateNewUserInput(email, password);
 
         const hashedPassword = bcrypt.hashSync(password, 10);
-        const user = new User(this.createNewUserId(), name, email, hashedPassword);
+        const user = new User(await this.createNewUserId(), name, email, hashedPassword);
 
         let node = await neode.create('User', user);
         Object.assign(user, {...node.properties(), node});
         return user;
     }
 
-    createNewUserId() {
-        return Math.max(...this.users.map(user => user.id), 0) + 1;
+    async createNewUserId() {
+        let currentMaxId = await neode.cypher('MATCH (user:User) RETURN user.id ORDER BY user.id DESC LIMIT 1');
+        if (currentMaxId.records.length === 0) {
+            return 1;
+        }
+        return parseInt(currentMaxId.records[0].get('user.id')) + 1;
     }
 
     async validateNewUserInput(mail, password) {
