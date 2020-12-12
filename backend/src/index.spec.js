@@ -107,11 +107,15 @@ describe('server', () => {
             new User(2, 'Martin Mustermann', 'martin@test.com', '12345678')
         ]);
 
-        const postDataStore = new PostDataStore(userDataStore, [
-            new Post(1, 'Test Message 1', 1),
-            new Post(2, 'Test Message 2', 2, new Map([[1, true]])),
-            new Post(3, 'Test Message 3', 2, new Map([[1, false]]))
-        ]);
+        const user1 = await userDataStore.getUserById(1);
+        const user2 = await userDataStore.getUserById(2);
+
+        const postDataStore = new PostDataStore(userDataStore);
+        await postDataStore.createPosts([
+            new Post({id: 1, title: 'Test Message 1', author: user1}),
+            new Post({id: 2, title: 'Test Message 2', author: user2}), // , new Map([[1, true]])
+            new Post({id: 3, title: 'Test Message 3', author: user2}) // , new Map([[1, false]])
+        ])
 
         server = createServer(
             () => ({user: {uid: 1}}),
