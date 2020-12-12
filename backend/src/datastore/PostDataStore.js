@@ -112,11 +112,11 @@ class PostDataStore extends DataSource {
             throw new UserInputError('Post not found for id ' + id);
         }
 
-        if (post.author_id !== this.currentUser) {
+        if (post.author.id !== this.currentUser) {
             throw new AuthenticationError('You are not the author of the post');
         }
 
-        this.posts = this.posts.filter(post => post.id !== id);
+        await neode.delete(post.node);
         return post;
     }
 }
