@@ -1,18 +1,18 @@
 const {rule, shield} = require('graphql-shield');
 
 const isAuthenticated = rule({cache: 'contextual'})(
-    async (parent, args, ctx, info) => {
+    async (parent, args, ctx) => {
         const token = ctx.user;
         if (!token) {
             return false;
         }
-        let user = await ctx.dataSources.userDataStore.getUserById(token.uid);
+        const user = await ctx.dataSources.userDataStore.getUserById(token.uid);
         return !!user;
     }
 );
 
 const isOwnUser = rule({})(
-    async (parent, args, ctx, info) => {
+    async (parent, args, ctx) => {
         const token = ctx.user;
         if (!token) {
             return false;
