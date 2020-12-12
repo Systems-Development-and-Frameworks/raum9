@@ -18,21 +18,17 @@ module.exports = {
         }
     },
     Mutation: {
-        write: async (parent, args, {user, dataSources}) => {
-            const title = args.post.title;
-            return dataSources.postsDataStore.createPost(title);
+        write: async (parent, args, {dataSources}) => {
+            return dataSources.postsDataStore.createPost(args.post.title);
         },
         upvote: async (parent, args, {dataSources}) => {
-            const postId = args.id;
-            return dataSources.postsDataStore.upvotePost(postId);
+            return dataSources.postsDataStore.upvotePost(args.id);
         },
         downvote: async (parent, args, {dataSources}) => {
-            const postId = args.id;
-            return dataSources.postsDataStore.downvotePost(postId);
+            return dataSources.postsDataStore.downvotePost(args.id);
         },
         delete: async (parent, args, {dataSources}) => {
-            const postId = args.id;
-            return dataSources.postsDataStore.deletePost(postId);
+            return dataSources.postsDataStore.deletePost(args.id);
         },
         signup: async (parent, args, {dataSources}) => {
             const {name, email, password} = args;

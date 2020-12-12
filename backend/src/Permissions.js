@@ -3,26 +3,21 @@ const {rule, shield} = require('graphql-shield');
 const isAuthenticated = rule({cache: 'contextual'})(
     async (parent, args, ctx, info) => {
         const token = ctx.user;
-        if (token) {
-            const user = ctx.dataSources.userDataStore.getUserById(token.uid);
-            if (user) {
-                return true;
-            }
+        if (!token) {
+            return false;
         }
-        return false;
+        return ctx.dataSources.userDataStore.getUserById(token.uid);
     }
 );
 
 const isOwnUser = rule({})(
     async ({email}, args, ctx, info) => {
         const token = ctx.user;
-        if (token) {
-            const user = ctx.dataSources.userDataStore.getUserById(token.uid);
-            if (user && user.email === email) {
-                return true;
-            }
+        if (!token) {
+            return false;
         }
-        return false;
+        const user = ctx.dataSources.userDataStore.getUserById(token.uid);
+        return user && user.email === email;
     }
 );
 
