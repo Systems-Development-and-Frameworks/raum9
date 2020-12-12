@@ -57,7 +57,7 @@ jobs:
       - name: Install database server
         uses: fehu/Setup-Neo4j@v1.2.0
         with:
-          tag: '3.4'
+          tag: 'latest'
 
       - run: npm install
       - run: npm run lint
