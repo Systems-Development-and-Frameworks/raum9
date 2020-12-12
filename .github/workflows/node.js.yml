@@ -54,8 +54,16 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Install neo4j
+      - uses: baptouuuu/setup-neo4j@v1.0.0
+            with:
+              tag: '3.4'
+
       - run: npm install
       - run: npm run lint
       - run: npm run test:unit
         env:
-          JWT_SECRET: nb3ig2u9ng2vdvnuwebv
+          JWT_SECRET: {{ secrets.JWT_SECRET }}
+          NEO4J_URL: {{ secrets.NEO4J_URL }}
+          NEO4J_USER: {{ secrets.NEO4J_USER }}
+          NEO4J_PASSWORD: {{ secrets.NEO4J_PASSWORD }}
