@@ -55,7 +55,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install database server
-        uses: baptouuuu/setup-neo4j@v1.0.0
+        uses: fehu/Setup-Neo4j@v1.2.0
         with:
           tag: '3.4'
 
