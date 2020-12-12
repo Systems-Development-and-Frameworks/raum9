@@ -1,32 +1,26 @@
 const {DataSource} = require('apollo-datasource');
 const {UserInputError, AuthenticationError} = require('apollo-server-errors');
 const neode = require('../database/NeodeConfiguration');
+const {User} = require('../datastore/UserDataStore');
 
 class Post {
-    constructor(id, title, author_id, votes = new Map()) {
+    constructor({id, title, author}) {
         this.id = id
         this.title = title
-        this.author_id = author_id
-        this.votes = votes
+        this.author = author
     }
 
     static fromObject(data) {
-        let object = new Post(0, '', 0);
-        Object.assign(object, data);
-        return object;
+        let author = User.fromObject(data.node.get('wrote').startNode().properties())
+        return new Post({id: data.id, title: data.title, author: author});
     }
 }
 
 class PostDataStore extends DataSource {
 
-    constructor(userDataStore, posts = null) {
+    constructor(userDataStore) {
         super()
-
         this.userDataStore = userDataStore;
-        this.posts = posts ?? [
-            new Post(1, 'Message 1', 1),
-            new Post(2, 'Message 2', 2, new Map([[1, true]]))
-        ];
     }
 
     initialize({context}) {
@@ -54,10 +48,33 @@ class PostDataStore extends DataSource {
         return Array.from(post.votes).map(([_, count]) => count ? 1 : -1).reduce((a, b) => a + b, 0)
     }
 
-    createPost(title) {
-        let post = new Post(Math.max(...this.posts.map(post => post.id), 0) + 1, title, this.currentUser)
-        this.posts.push(post);
+    async createPosts(posts) {
+        for (const post of posts) {
+            await this.createPost(post.id, post.title, post.author)
+        }
+    }
+
+    async createPost(id, title, authorNode) {
+        let post = new Post({id: id, title: title, author: authorNode})
+
+        const node = await neode.create('Post', post);
+        await node.relateTo(post.author.node, 'wrote');
+        Object.assign(post, {...node.properties(), node});
         return post;
+    }
+
+    async createPostForCurrentUser(title) {
+        let authorNode = await this.userDataStore.getUserById(this.currentUser);
+        let nextPostId = await PostDataStore.#nextPostId();
+        return this.createPost(nextPostId, title, authorNode);
+    }
+
+    static async #nextPostId() {
+        let currentMaxId = await neode.cypher('MATCH (post:Post) RETURN post.id ORDER BY post.id DESC LIMIT 1');
+        if (currentMaxId.records.length === 0) {
+            return 1;
+        }
+        return parseInt(currentMaxId.records[0].get('post.id')) + 1;
     }
 
     upvotePost(id) {

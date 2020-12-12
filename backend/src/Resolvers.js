@@ -5,7 +5,6 @@ module.exports = {
     },
 
     Post: {
-        author: (parent, args, {dataSources}) => dataSources.userDataStore.getUserById(parent.author_id),
         votes: async (parent, args, {dataSources}) => {
             return dataSources.postsDataStore.getVoteCount(parent);
         }
@@ -14,12 +13,12 @@ module.exports = {
     User: {
         posts: async (parent, args, {dataSources}) => {
             const posts = await dataSources.postsDataStore.allPosts();
-            return posts.filter(post => post.author_id === parent.name);
+            return posts.filter(post => post.author.id === parent.id);
         }
     },
     Mutation: {
         write: async (parent, args, {dataSources}) => {
-            return dataSources.postsDataStore.createPost(args.post.title);
+            return await dataSources.postsDataStore.createPostForCurrentUser(args.post.title);
         },
         upvote: async (parent, args, {dataSources}) => {
             return dataSources.postsDataStore.upvotePost(args.id);
