@@ -43,6 +43,12 @@ class UserDataStore extends DataSource {
         return nodes.map(node => User.fromObject({...node.properties(), node}));
     }
 
+    async createUsers(users) {
+        for (const user of users) {
+            await this.createUser(user.name, user.email, user.password);
+        }
+    }
+
     async createUser(name, email, password) {
         await this.validateNewUserInput(email, password);
 

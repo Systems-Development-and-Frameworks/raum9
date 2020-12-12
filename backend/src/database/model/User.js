@@ -3,6 +3,10 @@ module.exports = {
         type: 'int',
         primary: true
     },
+    name: {
+        type: 'string',
+        required: true
+    },
     email: {
         type: 'string',
         unique: true,

@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const {createTestClient} = require('apollo-server-testing');
@@ -88,14 +87,26 @@ const MUTATE_DELETE = gql`
     }
 `;
 
+const cleanDatabase = async () => {
+    const driver = require('./database/Neo4jDriver');
+    await driver
+        .session()
+        .writeTransaction(txc => txc.run('MATCH(n) DETACH DELETE n;'));
+};
+
 let server;
 
 describe('server', () => {
-    beforeEach(() => {
-        const userDataStore = new UserDataStore([
-            new User(1, 'Max Mustermann', 'test@test.com', bcrypt.hashSync('12345678', 10)),
-            new User(2, 'Martin Mustermann', 'martin@test.com', bcrypt.hashSync('12345678', 10))
+    beforeEach(async () => {
+        // Clear Database
+        await cleanDatabase();
+
+        const userDataStore = new UserDataStore();
+        await userDataStore.createUsers([
+            new User(1, 'Max Mustermann', 'test@test.com', '12345678'),
+            new User(2, 'Martin Mustermann', 'martin@test.com', '12345678')
         ]);
+
         const postDataStore = new PostDataStore(userDataStore, [
             new Post(1, 'Test Message 1', 1),
             new Post(2, 'Test Message 2', 2, new Map([[1, true]])),
@@ -109,6 +120,14 @@ describe('server', () => {
                 postsDataStore: postDataStore
             })
         );
+    });
+
+    afterAll(async () => {
+        await cleanDatabase();
+        const driver = require('./database/Neo4jDriver');
+        const neode = require('./database/NeodeConfiguration');
+        await driver.close();
+        await neode.driver.close();
     });
 
     describe('all posts query', () => {
