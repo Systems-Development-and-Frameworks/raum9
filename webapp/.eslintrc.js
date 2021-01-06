@@ -1,18 +1,18 @@
 module.exports = {
-  "env": {
-    "browser": true,
-    "es2021": true
+  root: true,
+  env: {
+    browser: true,
+    node: true
   },
-  "extends": "plugin:vue/essential",
-  "parserOptions": {
-    "ecmaVersion": 12,
-    "sourceType": "module"
+  parserOptions: {
+    parser: 'babel-eslint'
   },
-  "plugins": [
-    "vue"
+  extends: [
+    '@nuxtjs',
+    'plugin:nuxt/recommended'
   ],
-  "rules": {
-    "semi": ["error", "always"],
-    "quotes": ["error", "single"]
-  }
-};
+  plugins: [
+  ],
+  // add your custom rules here
+  rules: {}
+}
