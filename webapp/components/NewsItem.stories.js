@@ -1,6 +1,6 @@
 import {action} from '@storybook/addon-actions';
 
-import NewsItem from '../components/NewsItem';
+import NewsItem from './NewsItem';
 
 export default {
   title: 'NewsItem',
