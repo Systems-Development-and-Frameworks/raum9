@@ -1,8 +1,8 @@
 import {
   mount
 } from '@vue/test-utils';
-import HackerNews from './HackerNews.vue';
-import NewsItem from './NewsItem.vue';
+import HackerNews from '../components/HackerNews.vue';
+import NewsItem from '../components/NewsItem.vue';
 
 const createWrapper = (options) => {
   const defaults = {
