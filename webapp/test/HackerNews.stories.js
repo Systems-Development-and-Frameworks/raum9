@@ -1,4 +1,4 @@
-import HackerNews from './HackerNews';
+import HackerNews from '../components/HackerNews';
 
 export default {
   title: 'HackerNews',

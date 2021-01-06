@@ -51,7 +51,7 @@ describe('Placeholder', () => {
     });
   });
 
-  it('Show items', async () => {
+  it('Show items', () => {
     expect(wrapper.findAllComponents(NewsItem).at(0).text()).toContain('Message 1');
   });
 

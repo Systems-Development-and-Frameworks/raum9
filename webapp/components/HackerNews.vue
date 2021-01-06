@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     onNewsAdd(newsTitle) {
-      let newsItem = {
+      const newsItem = {
         id: this.nextId,
         title: newsTitle,
         voteCount: 0
@@ -53,10 +53,10 @@ export default {
       this.items.push(newsItem);
     },
     onNewsRemove(newsItem) {
-      this.items = this.items.filter((element) => element.id !== newsItem.id);
+      this.items = this.items.filter(element => element.id !== newsItem.id);
     },
     onVoteChange(args) {
-      let item = this.items.find((element) => element.id === args.newsItem.id);
+      const item = this.items.find(element => element.id === args.newsItem.id);
       item.voteCount += args.voteChange;
     },
     onSwitch() {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit.prevent="createNewsItem" id="news-input">
+    <form id="news-input" @submit.prevent="createNewsItem">
       <input id="news-input-txt" name="news-input-txt" v-model="news_input" placeholder="edit me"
              aria-label="News Message">
       <input type="submit" value="create" name="create-button" id="create-button" aria-label="Create">
