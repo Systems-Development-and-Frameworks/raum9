@@ -5,7 +5,6 @@ module.exports = {
     },
 
     Post: {
-        author: (parent, args, {dataSources}) => dataSources.userDataStore.getUserById(parent.author_id),
         votes: async (parent, args, {dataSources}) => {
             return dataSources.postsDataStore.getVoteCount(parent);
         }
@@ -14,30 +13,26 @@ module.exports = {
     User: {
         posts: async (parent, args, {dataSources}) => {
             const posts = await dataSources.postsDataStore.allPosts();
-            return posts.filter(post => post.author_id === parent.name);
+            return posts.filter(post => post.author.id === parent.id);
         }
     },
     Mutation: {
-        write: async (parent, args, {user, dataSources}) => {
-            const title = args.post.title;
-            return dataSources.postsDataStore.createPost(title);
+        write: async (parent, args, {dataSources}) => {
+            return dataSources.postsDataStore.createPostForCurrentUser(args.post.title);
         },
         upvote: async (parent, args, {dataSources}) => {
-            const postId = args.id;
-            return dataSources.postsDataStore.upvotePost(postId);
+            return dataSources.postsDataStore.upvotePost(args.id);
         },
         downvote: async (parent, args, {dataSources}) => {
-            const postId = args.id;
-            return dataSources.postsDataStore.downvotePost(postId);
+            return dataSources.postsDataStore.downvotePost(args.id);
         },
         delete: async (parent, args, {dataSources}) => {
-            const postId = args.id;
-            return dataSources.postsDataStore.deletePost(postId);
+            return dataSources.postsDataStore.deletePost(args.id);
         },
         signup: async (parent, args, {dataSources}) => {
             const {name, email, password} = args;
-            const createdUser = dataSources.userDataStore.createUser(name, email, password);
-            return dataSources.userDataStore.authenticateUser(createdUser.email, password);
+            const createdUser = await dataSources.userDataStore.createUser(name, email, password);
+            return await dataSources.userDataStore.authenticateUser(createdUser.email, password);
         },
         login: async (parent, args, {dataSources}) => {
             const {email, password} = args;

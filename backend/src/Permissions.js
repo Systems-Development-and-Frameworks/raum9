@@ -1,28 +1,24 @@
-const {rule, shield} = require('graphql-shield');
+const {shield, rule, deny, allow} = require('graphql-shield');
 
 const isAuthenticated = rule({cache: 'contextual'})(
-    async (parent, args, ctx, info) => {
+    async (parent, args, ctx) => {
         const token = ctx.user;
-        if (token) {
-            const user = ctx.dataSources.userDataStore.getUserById(token.uid);
-            if (user) {
-                return true;
-            }
+        if (!token) {
+            return false;
         }
-        return false;
+        const user = await ctx.dataSources.userDataStore.getUserById(token.uid);
+        return !!user;
     }
 );
 
 const isOwnUser = rule({})(
-    async ({email}, args, ctx, info) => {
+    async (parent, args, ctx) => {
         const token = ctx.user;
-        if (token) {
-            const user = ctx.dataSources.userDataStore.getUserById(token.uid);
-            if (user && user.email === email) {
-                return true;
-            }
+        if (!token) {
+            return false;
         }
-        return false;
+        const user = await ctx.dataSources.userDataStore.getUserById(token.uid);
+        return user && user.email === parent.email;
     }
 );
 
@@ -32,9 +28,14 @@ const permissions = shield(
             email: isOwnUser
         },
         Query: {
-            posts: isAuthenticated
+            '*': deny,
+            posts: isAuthenticated,
+            users: isAuthenticated
         },
         Mutation: {
+            '*': deny,
+            login: allow,
+            signup: allow,
             write: isAuthenticated,
             upvote: isAuthenticated,
             downvote: isAuthenticated,
