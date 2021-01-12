@@ -1,5 +1,8 @@
 const jwt = require('jsonwebtoken');
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 const {createTestClient} = require('apollo-server-testing');
 const {gql} = require('apollo-server');
 
