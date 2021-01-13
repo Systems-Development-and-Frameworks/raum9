@@ -36,7 +36,8 @@ export default {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
-    '@nuxt/content'
+    '@nuxt/content',
+    '@nuxtjs/apollo'
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
@@ -47,8 +48,21 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
+    hotMiddleware: {
+      client: {
+        // turn off client overlay when errors are present
+        overlay: false
+      }
+    }
   },
   storybook: {
     // Options
+  },
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: 'http://localhost:4000',
+      }
+    }
   }
 }

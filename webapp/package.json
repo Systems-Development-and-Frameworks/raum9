@@ -7,7 +7,7 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore components pages test",
+    "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore components pages test store",
     "lint": "npm run lint:js",
     "test": "jest"
   },
@@ -16,6 +16,7 @@
     "@nuxtjs/apollo": "^4.0.1-rc.5",
     "@nuxtjs/axios": "^5.12.2",
     "@nuxtjs/pwa": "^3.0.2",
+    "cookie": "^0.4.1",
     "core-js": "^3.6.5",
     "nuxt": "^2.14.6"
   },
