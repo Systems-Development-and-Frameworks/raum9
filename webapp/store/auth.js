@@ -1,6 +1,6 @@
 import {SET_USER, SET_TOKEN, SET_LOADING} from '.';
 import {MUTATE_LOGIN} from '@/graphql/mutations';
-
+import jsonwebtoken from 'jsonwebtoken';
 
 export const state = () => ({
   loading: false,
@@ -11,6 +11,9 @@ export const state = () => ({
 export const getters = {
   loggedIn(state) {
     return !!state.token;
+  },
+  currentUser(state) {
+    return state.currentUser;
   },
 };
 
@@ -39,7 +42,7 @@ export const actions = {
         }
       });
       commit(SET_TOKEN, data.login);
-      commit(SET_USER, data.login);
+      commit(SET_USER, jsonwebtoken.decode(data.login).uid);
       await this.$apolloHelpers.onLogin(data.login);
     } finally {
       commit(SET_LOADING, false);

@@ -2,19 +2,24 @@
   <div class="news-item">
     <h2><span class="news-message">{{ newsItem.title }}</span> ({{ newsItem.voteCount }})</h2>
     <span>
-      <button @click="upvote">upvote</button>
-      <button @click="downvote">downvote</button>
-      <button @click="remove" class="remove-button">remove</button>
+      <button @click="upvote" v-if="loggedIn">upvote</button>
+      <button @click="downvote" v-if="loggedIn">downvote</button>
+      <button @click="remove" v-if="loggedIn && newsItem.author === currentUser" class="remove-button">remove</button>
     </span>
   </div>
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   name: 'NewsItem',
   props: ['newsItem'],
   data() {
     return {};
+  },
+  computed: {
+    ...mapGetters('auth', ['loggedIn', 'currentUser'])
   },
   methods: {
     upvote() {

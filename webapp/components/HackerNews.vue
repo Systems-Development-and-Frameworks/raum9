@@ -9,13 +9,14 @@
     <div v-else id="news-placeholder">
       The list is empty :(
     </div>
-    <NewsForm @news-add="onNewsAdd" @switch="onSwitch"></NewsForm>
+    <NewsForm @news-add="onNewsAdd" @switch="onSwitch" v-if="loggedIn"></NewsForm>
   </div>
 </template>
 
 <script>
 import NewsItem from './NewsItem.vue';
 import NewsForm from './NewsForm.vue';
+import {mapGetters} from "vuex";
 
 export default {
   name: 'HackerNews',
@@ -30,6 +31,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters('auth', ['loggedIn']),
     sortedItems() {
       let sortedArray;
       if (this.ascending) {
