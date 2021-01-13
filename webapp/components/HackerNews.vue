@@ -1,5 +1,6 @@
 <template>
   <div class="hacker-news">
+    <Menu></Menu>
     <h1>News List</h1>
     <div v-if="sortedItems.length">
       <div v-for="item in sortedItems" :key="item.id">
@@ -16,10 +17,11 @@
 <script>
 import NewsItem from './NewsItem.vue';
 import NewsForm from './NewsForm.vue';
+import Menu from './Menu.vue';
 
 export default {
   name: 'HackerNews',
-  components: {NewsItem, NewsForm},
+  components: {NewsItem, NewsForm, Menu},
   props: {
     initialNews: {type: Array, required: false}
   },

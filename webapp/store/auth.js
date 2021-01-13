@@ -30,7 +30,7 @@ export const actions = {
   async login({commit}, {email, password}) {
     commit(SET_LOADING, true);
     try {
-      let client = this.app.apolloProvider.defaultClient
+      const client = this.app.apolloProvider.defaultClient;
       const {data} = await client.mutate({
         mutation: MUTATE_LOGIN,
         variables: {
@@ -49,5 +49,5 @@ export const actions = {
     commit(SET_TOKEN, null);
     commit(SET_USER, null);
     await this.$apolloHelpers.onLogout();
-  },
+  }
 };

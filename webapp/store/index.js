@@ -20,6 +20,6 @@ export const actions = {
     if (!token) {
       return;
     }
-    store.commit('auth/setToken', token);
+    store.commit('auth/SET_TOKEN', token);
   },
 };

@@ -27,8 +27,9 @@ export default {
   },
   methods: {
     ...mapActions('auth', ['login']),
-    loginAction() {
-      this.login({email: this.username, password: this.password});
+    async loginAction() {
+      await this.login({email: this.username, password: this.password});
+      await this.$router.push('/');
     }
   }
 };
