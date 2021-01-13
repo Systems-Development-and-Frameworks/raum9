@@ -9,18 +9,20 @@
     <div v-else id="news-placeholder">
       The list is empty :(
     </div>
-    <NewsForm @news-add="onNewsAdd" @switch="onSwitch" v-if="loggedIn"></NewsForm>
+    <NewsForm @news-add="onNewsAdd" v-if="loggedIn"></NewsForm>
+    <NewsOrder @switch="onSwitch"></NewsOrder>
   </div>
 </template>
 
 <script>
 import NewsItem from './NewsItem.vue';
 import NewsForm from './NewsForm.vue';
+import NewsOrder from './NewsOrder.vue';
 import {mapGetters} from "vuex";
 
 export default {
   name: 'HackerNews',
-  components: {NewsItem, NewsForm},
+  components: {NewsItem, NewsForm, NewsOrder},
   props: {
     initialNews: {type: Array, required: false}
   },

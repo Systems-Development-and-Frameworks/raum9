@@ -5,7 +5,6 @@
              aria-label="News Message">
       <input type="submit" value="create" name="create-button" id="create-button" aria-label="Create">
     </form>
-    <button @click="switchSortOrder" id="switch-order-button">switch sort order</button>
   </div>
 </template>
 
@@ -22,9 +21,6 @@ export default {
       this.$emit('news-add', this.news_input);
       this.news_input = '';
     },
-    switchSortOrder() {
-      this.$emit('switch');
-    }
   }
 };
 </script>
