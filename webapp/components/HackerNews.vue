@@ -1,6 +1,5 @@
 <template>
   <div class="hacker-news">
-    {{ this.$store.getters }}
     <h1>News List</h1>
     <div v-if="sortedItems.length">
       <div v-for="item in sortedItems" :key="item.id">
