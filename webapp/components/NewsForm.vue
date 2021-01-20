@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
   name: 'NewsForm',
   data() {
@@ -17,8 +19,9 @@ export default {
     };
   },
   methods: {
-    createNewsItem() {
-      this.$emit('news-add', this.news_input);
+    ...mapActions('post', ['write']),
+    async createNewsItem() {
+      await this.write({title: this.news_input});
       this.news_input = '';
     },
   }

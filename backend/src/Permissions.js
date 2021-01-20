@@ -29,7 +29,7 @@ const permissions = shield(
         },
         Query: {
             '*': deny,
-            posts: isAuthenticated,
+            posts: allow,
             users: isAuthenticated
         },
         Mutation: {

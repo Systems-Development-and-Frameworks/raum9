@@ -1,6 +1,6 @@
 <template>
   <div class="news-item">
-    <h2><span class="news-message">{{ newsItem.title }}</span> ({{ newsItem.voteCount }})</h2>
+    <h2><span class="news-message">{{ newsItem.title }}</span> ({{ newsItem.votes }})</h2>
     <span>
       <button @click="upvote" v-if="loggedIn">upvote</button>
       <button @click="downvote" v-if="loggedIn">downvote</button>

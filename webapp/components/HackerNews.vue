@@ -9,7 +9,7 @@
     <div v-else id="news-placeholder">
       The list is empty :(
     </div>
-    <NewsForm @news-add="onNewsAdd" v-if="loggedIn"></NewsForm>
+    <NewsForm v-if="loggedIn"></NewsForm>
     <NewsOrder @switch="onSwitch"></NewsOrder>
   </div>
 </template>
@@ -18,7 +18,7 @@
 import NewsItem from './NewsItem.vue';
 import NewsForm from './NewsForm.vue';
 import NewsOrder from './NewsOrder.vue';
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: 'HackerNews',
@@ -29,33 +29,26 @@ export default {
   data() {
     return {
       ascending: false,
-      items: [...this.initialNews ?? []],
     };
   },
   computed: {
     ...mapGetters('auth', ['loggedIn']),
+    ...mapGetters('post', ['getPosts']),
     sortedItems() {
       let sortedArray;
       if (this.ascending) {
-        sortedArray = [...this.items].sort((o2, o1) => o2.voteCount - o1.voteCount);
+        sortedArray = [...this.getPosts].sort((o2, o1) => o2.voteCount - o1.voteCount);
       } else {
-        sortedArray = [...this.items].sort((o1, o2) => o2.voteCount - o1.voteCount);
+        sortedArray = [...this.getPosts].sort((o1, o2) => o2.voteCount - o1.voteCount);
       }
       return sortedArray;
     },
-    nextId() {
-      return Math.max(...this.items.map(item => item.id), 0) + 1;
-    }
+  },
+  async beforeMount() {
+    await this.fetchPosts();
   },
   methods: {
-    onNewsAdd(newsTitle) {
-      const newsItem = {
-        id: this.nextId,
-        title: newsTitle,
-        voteCount: 0
-      };
-      this.items.push(newsItem);
-    },
+    ...mapActions('post', ['fetchPosts']),
     onNewsRemove(newsItem) {
       this.items = this.items.filter(element => element.id !== newsItem.id);
     },

@@ -5,3 +5,33 @@ export const MUTATE_LOGIN = gql`
     login(email: $email, password: $password)
   }
 `;
+
+export const QUERY_POSTS = gql`
+  query {
+    posts {
+      id,
+      title,
+      votes,
+      author {
+        id,
+        name
+      }
+    }
+  }
+`;
+
+export const MUTATE_WRITE = gql`
+  mutation($title: String!) {
+    write(post: {
+      title: $title
+    }) {
+      id,
+      title,
+      votes,
+      author {
+        id,
+        name
+      }
+    }
+  }
+`;

@@ -6,6 +6,9 @@ export const SET_TOKEN = 'SET_TOKEN';
 export const SET_USER = 'SET_USER';
 export const SET_LOADING = 'SET_LOADING';
 
+export const SET_POSTS = 'SET_POSTS';
+export const ADD_POST = 'ADD_POST';
+
 export const actions = {
   nuxtServerInit(store, context) {
     const {req} = context.ssrContext;
