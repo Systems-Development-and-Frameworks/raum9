@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: 'NewsItem',
@@ -22,17 +22,12 @@ export default {
     ...mapGetters('auth', ['loggedIn', 'currentUser'])
   },
   methods: {
+    ...mapActions('post', ['upvotePost', 'downvotePost']),
     upvote() {
-      this.$emit('update', {
-        newsItem: this.newsItem,
-        voteChange: 1
-      });
+      this.upvotePost({id: this.newsItem.id})
     },
     downvote() {
-      this.$emit('update', {
-        newsItem: this.newsItem,
-        voteChange: -1
-      });
+      this.downvotePost({id: this.newsItem.id})
     },
     remove() {
       this.$emit('news-remove', this.newsItem);

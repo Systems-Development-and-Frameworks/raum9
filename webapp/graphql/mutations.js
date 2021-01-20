@@ -35,3 +35,31 @@ export const MUTATE_WRITE = gql`
     }
   }
 `;
+
+export const MUTATE_UPVOTE = gql`
+  mutation($id: ID!) {
+    upvote(id: $id) {
+      id,
+      title,
+      votes,
+      author {
+        id,
+        name
+      }
+    }
+  }
+`;
+
+export const MUTATE_DOWNVOTE = gql`
+  mutation($id: ID!) {
+    downvote(id: $id) {
+      id,
+      title,
+      votes,
+      author {
+        id,
+        name
+      }
+    }
+  }
+`;

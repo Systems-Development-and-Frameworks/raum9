@@ -3,7 +3,7 @@
     <h1>News List</h1>
     <div v-if="sortedItems.length">
       <div v-for="item in sortedItems" :key="item.id">
-        <NewsItem :news-item="item" @news-remove="onNewsRemove" @update="onVoteChange"/>
+        <NewsItem :news-item="item" @news-remove="onNewsRemove"/>
       </div>
     </div>
     <div v-else id="news-placeholder">
@@ -51,10 +51,6 @@ export default {
     ...mapActions('post', ['fetchPosts']),
     onNewsRemove(newsItem) {
       this.items = this.items.filter(element => element.id !== newsItem.id);
-    },
-    onVoteChange(args) {
-      const item = this.items.find(element => element.id === args.newsItem.id);
-      item.voteCount += args.voteChange;
     },
     onSwitch() {
       this.ascending = !this.ascending;
