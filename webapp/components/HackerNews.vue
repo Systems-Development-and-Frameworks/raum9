@@ -23,9 +23,6 @@ import {mapActions, mapGetters} from "vuex";
 export default {
   name: 'HackerNews',
   components: {NewsItem, NewsForm, NewsOrder},
-  props: {
-    initialNews: {type: Array, required: false}
-  },
   data() {
     return {
       ascending: false,
