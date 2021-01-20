@@ -30,6 +30,7 @@ module.exports = {
     "vue/html-closing-bracket-spacing": "off",
     "vue/require-default-prop": "off",
     "vue/require-prop-types": "off",
-    "vue/html-closing-bracket-newline": "off"
+    "vue/html-closing-bracket-newline": "off",
+    "no-unused-vars": "off"
   }
 }

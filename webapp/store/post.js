@@ -3,13 +3,13 @@ import {ADD_POST, SET_POSTS} from '.';
 
 export const state = () => ({
   posts: []
-})
+});
 
 export const getters = {
   getPosts(state) {
     return state.posts;
   }
-}
+};
 
 export const mutations = {
   [SET_POSTS](state, posts) {
@@ -18,7 +18,7 @@ export const mutations = {
   [ADD_POST](state, post) {
     state.posts.push(post);
   }
-}
+};
 
 export const actions = {
   async write({commit}, {title}) {
@@ -102,4 +102,4 @@ export const actions = {
     } finally {
     }
   }
-}
+};

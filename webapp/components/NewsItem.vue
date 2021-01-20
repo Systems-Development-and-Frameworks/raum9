@@ -24,10 +24,10 @@ export default {
   methods: {
     ...mapActions('post', ['upvotePost', 'downvotePost', 'deletePost']),
     upvote() {
-      this.upvotePost({id: this.newsItem.id})
+      this.upvotePost({id: this.newsItem.id});
     },
     downvote() {
-      this.downvotePost({id: this.newsItem.id})
+      this.downvotePost({id: this.newsItem.id});
     },
     remove() {
       this.deletePost({id: this.newsItem.id});
