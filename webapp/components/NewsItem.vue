@@ -4,7 +4,7 @@
     <span>
       <button @click="upvote" v-if="loggedIn">upvote</button>
       <button @click="downvote" v-if="loggedIn">downvote</button>
-      <button @click="remove" v-if="loggedIn && newsItem.author === currentUser" class="remove-button">remove</button>
+      <button @click="remove" v-if="loggedIn && parseInt(newsItem.author.id) === currentUser" class="remove-button">remove</button>
     </span>
   </div>
 </template>
@@ -22,7 +22,7 @@ export default {
     ...mapGetters('auth', ['loggedIn', 'currentUser'])
   },
   methods: {
-    ...mapActions('post', ['upvotePost', 'downvotePost']),
+    ...mapActions('post', ['upvotePost', 'downvotePost', 'deletePost']),
     upvote() {
       this.upvotePost({id: this.newsItem.id})
     },
@@ -30,7 +30,7 @@ export default {
       this.downvotePost({id: this.newsItem.id})
     },
     remove() {
-      this.$emit('news-remove', this.newsItem);
+      this.deletePost({id: this.newsItem.id});
     }
   }
 };

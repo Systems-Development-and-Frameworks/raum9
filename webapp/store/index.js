@@ -1,5 +1,6 @@
 // in store/index.js
 import cookie from 'cookie';
+import jsonwebtoken from "jsonwebtoken";
 
 
 export const SET_TOKEN = 'SET_TOKEN';
@@ -24,5 +25,6 @@ export const actions = {
       return;
     }
     store.commit('auth/SET_TOKEN', token);
+    store.commit('auth/SET_USER', jsonwebtoken.decode(token).uid);
   },
 };

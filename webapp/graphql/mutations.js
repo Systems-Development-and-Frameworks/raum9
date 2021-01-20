@@ -63,3 +63,17 @@ export const MUTATE_DOWNVOTE = gql`
     }
   }
 `;
+
+export const MUTATE_DELETE = gql`
+  mutation($id: ID!) {
+    delete(id: $id) {
+      id,
+      title,
+      votes,
+      author {
+        id,
+        name
+      }
+    }
+  }
+`;

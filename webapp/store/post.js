@@ -1,4 +1,4 @@
-import {MUTATE_DOWNVOTE, MUTATE_UPVOTE, MUTATE_WRITE, QUERY_POSTS} from '@/graphql/mutations';
+import {MUTATE_DELETE, MUTATE_DOWNVOTE, MUTATE_UPVOTE, MUTATE_WRITE, QUERY_POSTS} from '@/graphql/mutations';
 import {ADD_POST, SET_POSTS} from '.';
 
 export const state = () => ({
@@ -73,6 +73,23 @@ export const actions = {
       const client = this.app.apolloProvider.defaultClient;
       const {data} = await client.mutate({
         mutation: MUTATE_DOWNVOTE,
+        variables: {
+          id
+        },
+        context: {
+          headers: {
+            Authentication: 'Bearer ' + this.$apolloHelpers.getToken()
+          }
+        }
+      });
+    } finally {
+    }
+  },
+  async deletePost({commit}, {id}) {
+    try {
+      const client = this.app.apolloProvider.defaultClient;
+      const {data} = await client.mutate({
+        mutation: MUTATE_DELETE,
         variables: {
           id
         },
