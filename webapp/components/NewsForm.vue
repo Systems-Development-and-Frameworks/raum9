@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
 import {MUTATE_WRITE, QUERY_POSTS} from "~/graphql/mutations";
 
 export default {
@@ -17,7 +16,7 @@ export default {
   data() {
     return {
       news_input: '',
-    };
+    };C
   },
   methods: {
     async createNewsItem() {
