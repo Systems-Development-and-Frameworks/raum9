@@ -160,7 +160,7 @@ describe('server', () => {
             const res = await query({query: GET_USERS});
             expect(res.data.users.sort((o1, o2) => o1.name < o2.name)).toEqual([
                 {name: 'Max Mustermann'},
-                {name: 'Martin Mustermann'},
+                {name: 'Martin Mustermann'}
             ]);
         });
 
