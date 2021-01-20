@@ -10,6 +10,7 @@
 
 <script>
 import {mapActions} from "vuex";
+import {MUTATE_WRITE, QUERY_POSTS} from "~/graphql/mutations";
 
 export default {
   name: 'NewsForm',
@@ -19,9 +20,18 @@ export default {
     };
   },
   methods: {
-    ...mapActions('post', ['write']),
     async createNewsItem() {
-      await this.write({title: this.news_input});
+      await this.$apollo.mutate({
+        mutation: MUTATE_WRITE,
+        variables: {
+          title: this.news_input
+        },
+        update: (store, {data: {write}}) => {
+          const data = store.readQuery({query: QUERY_POSTS});
+          data.posts.push(write);
+          store.writeQuery({query: QUERY_POSTS, data});
+        }
+      });
       this.news_input = '';
     },
   }

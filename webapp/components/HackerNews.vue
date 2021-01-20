@@ -19,6 +19,7 @@ import NewsItem from './NewsItem.vue';
 import NewsForm from './NewsForm.vue';
 import NewsOrder from './NewsOrder.vue';
 import {mapActions, mapGetters} from "vuex";
+import {QUERY_POSTS} from '@/graphql/mutations';
 
 export default {
   name: 'HackerNews',
@@ -26,26 +27,25 @@ export default {
   data() {
     return {
       ascending: false,
+      posts: []
     };
+  },
+  apollo: {
+    posts: QUERY_POSTS
   },
   computed: {
     ...mapGetters('auth', ['loggedIn']),
-    ...mapGetters('post', ['getPosts']),
     sortedItems() {
       let sortedArray;
       if (this.ascending) {
-        sortedArray = [...this.getPosts].sort((o2, o1) => o2.votes - o1.votes);
+        sortedArray = [...this.posts].sort((o2, o1) => o2.votes - o1.votes);
       } else {
-        sortedArray = [...this.getPosts].sort((o1, o2) => o2.votes - o1.votes);
+        sortedArray = [...this.posts].sort((o1, o2) => o2.votes - o1.votes);
       }
       return sortedArray;
     },
   },
-  async beforeMount() {
-    await this.fetchPosts();
-  },
   methods: {
-    ...mapActions('post', ['fetchPosts']),
     onSwitch() {
       this.ascending = !this.ascending;
     }

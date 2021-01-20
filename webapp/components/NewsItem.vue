@@ -11,6 +11,7 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
+import {MUTATE_DELETE, MUTATE_DOWNVOTE, MUTATE_UPVOTE, MUTATE_WRITE, QUERY_POSTS} from "~/graphql/mutations";
 
 export default {
   name: 'NewsItem',
@@ -22,15 +23,34 @@ export default {
     ...mapGetters('auth', ['loggedIn', 'currentUser'])
   },
   methods: {
-    ...mapActions('post', ['upvotePost', 'downvotePost', 'deletePost']),
-    upvote() {
-      this.upvotePost({id: this.newsItem.id});
+    async upvote() {
+      await this.$apollo.mutate({
+        mutation: MUTATE_UPVOTE,
+        variables: {
+          id: this.newsItem.id
+        }
+      });
     },
-    downvote() {
-      this.downvotePost({id: this.newsItem.id});
+    async downvote() {
+      await this.$apollo.mutate({
+        mutation: MUTATE_DOWNVOTE,
+        variables: {
+          id: this.newsItem.id
+        }
+      });
     },
-    remove() {
-      this.deletePost({id: this.newsItem.id});
+    async remove() {
+      await this.$apollo.mutate({
+        mutation: MUTATE_DELETE,
+        variables: {
+          id: this.newsItem.id
+        },
+        update: (store, {data}) => {
+          const dataCache = store.readQuery({query: QUERY_POSTS});
+          dataCache.posts = dataCache.posts.filter(post => post.id !== data.delete.id);
+          store.writeQuery({query: QUERY_POSTS, data: dataCache});
+        }
+      });
     }
   }
 };
