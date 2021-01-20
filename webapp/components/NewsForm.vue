@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       news_input: '',
-    };C
+    };
   },
   methods: {
     async createNewsItem() {

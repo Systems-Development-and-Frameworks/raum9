@@ -2,28 +2,25 @@ import {createLocalVue, mount} from '@vue/test-utils';
 import HackerNews from '../components/HackerNews.vue';
 import NewsItem from '../components/NewsItem.vue';
 
-import Vuex from 'vuex'
+import Vuex from 'vuex';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 
 const createWrapper = (options) => {
-  let getters;
-  let store;
+  const getters = {
+    loggedIn: () => true,
+    currentUser: () => 1,
+  };
 
-  getters = {
-    "loggedIn": () => true,
-    "currentUser": () => 1,
-  }
-
-  store = new Vuex.Store({
+  const store = new Vuex.Store({
     modules: {
       auth: {
         namespaced: true,
-        getters: getters
+        getters
       }
     }
-  })
+  });
 
   const defaults = {
     localVue,
@@ -84,7 +81,7 @@ describe('Placeholder', () => {
     expect(wrapper.findAllComponents(NewsItem).at(0).text()).toContain('Message 1');
   });
 
-  it('Show if no item exists', async () => {
+  it('Show if no item exists', () => {
     wrapper = createWrapper({
       propsData: {
         initialNews: [],
