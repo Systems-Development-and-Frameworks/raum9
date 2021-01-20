@@ -1,5 +1,6 @@
 <template>
   <div class="hacker-news">
+    {{ this.$store.getters }}
     <h1>News List</h1>
     <div v-if="sortedItems.length">
       <div v-for="item in sortedItems" :key="item.id">
@@ -24,10 +25,13 @@ import {QUERY_POSTS} from '@/graphql/mutations';
 export default {
   name: 'HackerNews',
   components: {NewsItem, NewsForm, NewsOrder},
+  props: {
+    initialNews: {type: Array, required: false}
+  },
   data() {
     return {
       ascending: false,
-      posts: []
+      posts: [...this.initialNews ?? []]
     };
   },
   apollo: {
