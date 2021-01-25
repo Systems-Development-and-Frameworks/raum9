@@ -14,6 +14,14 @@ export default {
     ]
   },
 
+  pwa: {
+    manifest: {
+      name: 'HackerNews',
+      lang: 'de',
+      theme_color: '#2196F3'
+    }
+  },
+
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
   ],
