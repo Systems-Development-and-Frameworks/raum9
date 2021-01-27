@@ -2,6 +2,12 @@
   <v-app dark>
     <AppBar></AppBar>
 
+    <v-img height="200" src="/banner.jpg">
+      <h1 class="banner-text">
+          Lorem Ipsum
+      </h1>
+    </v-img>
+
     <v-main>
       <v-container>
         <nuxt/>
@@ -47,3 +53,11 @@ export default {
   }
 }
 </script>
+
+<style>
+.banner-text {
+  position: absolute;
+  top: 50%;
+  left: 10%
+}
+</style>
