@@ -1,15 +1,15 @@
 <template>
   <div>
     <v-card
-      :class="$vuetify.breakpoint.mdAndDown ? 'd-flex flex-column' : 'd-flex flex-row justify-space-around'"
+      :class="$vuetify.breakpoint.mdAndDown ? 'd-flex flex-column' : 'd-flex flex-row justify-space-around flex-wrap'"
       :color="$vuetify.theme.dark ? 'grey darken-3' : 'grey lighten-4'"
       flat
       tile
     >
       <v-card
-        v-for="n in 3"
+        v-for="n in 4"
         :key="n"
-        class="py-4 my-4 flex-grow-1"
+        :class="$vuetify.breakpoint.mdAndDown ? 'py-4 my-4 flex-grow-1' : 'py-4 my-4 flex-grow-1 content-item'"
         outlined
         tile
       >
@@ -33,3 +33,10 @@
 <script>
 export default {}
 </script>
+
+<style>
+.content-item {
+  flex-basis: 33%;
+  max-width: 33%;
+}
+</style>
