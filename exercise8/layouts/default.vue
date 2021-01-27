@@ -22,6 +22,7 @@
         <v-btn
           v-for="item in footer_buttons"
           :to="item.to"
+          class="mt-2"
           flat
         >{{ item.title }}
         </v-btn>

@@ -13,6 +13,7 @@
           v-for="item in items"
           :key="item.icon"
           :to="item.to"
+          class="ml-2"
           flat
         >{{ item.title }}
         </v-btn>
