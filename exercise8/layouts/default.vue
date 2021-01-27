@@ -12,7 +12,15 @@
       :absolute="!fixed"
       app
     >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+      <div class="d-flex flex-column mb-6">
+        <v-btn
+          v-for="item in footer_buttons"
+          :to="item.to"
+          flat
+        >{{ item.title }}
+        </v-btn>
+        &copy; {{ new Date().getFullYear() }}
+      </div>
     </v-footer>
   </v-app>
 </template>
@@ -25,6 +33,16 @@ export default {
   data() {
     return {
       fixed: false,
+      footer_buttons: [
+        {
+          title: "Imprint",
+          to: "/"
+        },
+        {
+          title: "Data Privacy",
+          to: "/"
+        }
+      ]
     }
   }
 }
