@@ -116,12 +116,6 @@ class PostDataStore extends DataSource {
             throw new AuthenticationError('You are not the author of the post');
         }
 
-        //delete votes first -> possible side effects
-        let votes = post.node.get('votes')
-        for (const vote of votes) {
-            await neode.delete(vote.node)
-        }
-
         await neode.delete(post.node);
         return post;
     }

@@ -1,6 +1,6 @@
 import {action} from '@storybook/addon-actions';
 
-import NewsForm from '../components/NewsForm';
+import NewsForm from './NewsForm';
 
 export default {
   title: 'NewsForm',

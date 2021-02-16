@@ -1,5 +1,8 @@
 const jwt = require('jsonwebtoken');
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 const {createTestClient} = require('apollo-server-testing');
 const {gql} = require('apollo-server');
 
@@ -155,7 +158,7 @@ describe('server', () => {
             const {query} = createTestClient(server);
 
             const res = await query({query: GET_USERS});
-            expect(res.data.users).toEqual([
+            expect(res.data.users.sort((o1, o2) => o1.name < o2.name)).toEqual([
                 {name: 'Max Mustermann'},
                 {name: 'Martin Mustermann'}
             ]);

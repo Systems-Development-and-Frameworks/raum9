@@ -1,36 +1,56 @@
 <template>
   <div class="news-item">
-    <h2><span class="news-message">{{ newsItem.title }}</span> ({{ newsItem.voteCount }})</h2>
+    <h2><span class="news-message">{{ newsItem.title }}</span> ({{ newsItem.votes }})</h2>
     <span>
-      <button @click="upvote">upvote</button>
-      <button @click="downvote">downvote</button>
-      <button @click="remove" class="remove-button">remove</button>
+      <button @click="upvote" v-if="loggedIn">upvote</button>
+      <button @click="downvote" v-if="loggedIn">downvote</button>
+      <button @click="remove" v-if="loggedIn && parseInt(newsItem.author.id) === currentUser" class="remove-button">remove</button>
     </span>
   </div>
 </template>
 
 <script>
+import {mapActions, mapGetters} from "vuex";
+import {MUTATE_DELETE, MUTATE_DOWNVOTE, MUTATE_UPVOTE, MUTATE_WRITE, QUERY_POSTS} from "~/graphql/mutations";
+
 export default {
   name: 'NewsItem',
   props: ['newsItem'],
   data() {
     return {};
   },
+  computed: {
+    ...mapGetters('auth', ['loggedIn', 'currentUser'])
+  },
   methods: {
-    upvote() {
-      this.$emit('update', {
-        newsItem: this.newsItem,
-        voteChange: 1
+    async upvote() {
+      await this.$apollo.mutate({
+        mutation: MUTATE_UPVOTE,
+        variables: {
+          id: this.newsItem.id
+        }
       });
     },
-    downvote() {
-      this.$emit('update', {
-        newsItem: this.newsItem,
-        voteChange: -1
+    async downvote() {
+      await this.$apollo.mutate({
+        mutation: MUTATE_DOWNVOTE,
+        variables: {
+          id: this.newsItem.id
+        }
       });
     },
-    remove() {
-      this.$emit('news-remove', this.newsItem);
+    async remove() {
+      await this.$apollo.mutate({
+        mutation: MUTATE_DELETE,
+        variables: {
+          id: this.newsItem.id
+        },
+        update: (store, {data}) => {
+          const dataCache = store.readQuery({query: QUERY_POSTS});
+          dataCache.posts = dataCache.posts.filter(post => post.id !== data.delete.id);
+          store.writeQuery({query: QUERY_POSTS, data: dataCache});
+        }
+      });
     }
   }
 };

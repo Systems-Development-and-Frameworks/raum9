@@ -5,11 +5,12 @@
              aria-label="News Message">
       <input type="submit" value="create" name="create-button" id="create-button" aria-label="Create">
     </form>
-    <button @click="switchSortOrder" id="switch-order-button">switch sort order</button>
   </div>
 </template>
 
 <script>
+import {MUTATE_WRITE, QUERY_POSTS} from "~/graphql/mutations";
+
 export default {
   name: 'NewsForm',
   data() {
@@ -18,13 +19,20 @@ export default {
     };
   },
   methods: {
-    createNewsItem() {
-      this.$emit('news-add', this.news_input);
+    async createNewsItem() {
+      await this.$apollo.mutate({
+        mutation: MUTATE_WRITE,
+        variables: {
+          title: this.news_input
+        },
+        update: (store, {data: {write}}) => {
+          const data = store.readQuery({query: QUERY_POSTS});
+          data.posts.push(write);
+          store.writeQuery({query: QUERY_POSTS, data});
+        }
+      });
       this.news_input = '';
     },
-    switchSortOrder() {
-      this.$emit('switch');
-    }
   }
 };
 </script>

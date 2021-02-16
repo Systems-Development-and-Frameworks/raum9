@@ -1,24 +1,49 @@
-import {
-  mount
-} from '@vue/test-utils';
+import {createLocalVue, mount} from '@vue/test-utils';
 import HackerNews from '../components/HackerNews.vue';
 import NewsItem from '../components/NewsItem.vue';
 
+import Vuex from 'vuex';
+
+const localVue = createLocalVue();
+localVue.use(Vuex);
+
 const createWrapper = (options) => {
+  const getters = {
+    loggedIn: () => true,
+    currentUser: () => 1,
+  };
+
+  const store = new Vuex.Store({
+    modules: {
+      auth: {
+        namespaced: true,
+        getters
+      }
+    }
+  });
+
   const defaults = {
+    localVue,
+    store,
     propsData: {
       initialNews: [{
-        id: 0,
-        title: 'Message 1',
-        voteCount: 2
-      }, {
         id: 1,
+        title: 'Message 1',
+        votes: 2,
+        author: {
+          id: 1
+        }
+      }, {
+        id: 2,
         title: 'Message 2',
-        voteCount: 4
+        votes: 4,
+        author: {
+          id: 1
+        }
       }],
     }
   };
-  return mount(HackerNews, { ...defaults, ...options });
+  return mount(HackerNews, {...defaults, ...options});
 };
 
 describe('Sorting Order', () => {
@@ -39,30 +64,30 @@ describe('Sorting Order', () => {
 
 describe('Placeholder', () => {
   let wrapper;
-  beforeEach(() => {
+
+  it('Show items', () => {
     wrapper = createWrapper({
       propsData: {
         initialNews: [{
           id: 0,
           title: 'Message 1',
-          voteCount: 2,
+          votes: 2,
+          author: {
+            id: 1
+          }
         }],
       }
     });
-  });
-
-  it('Show items', () => {
     expect(wrapper.findAllComponents(NewsItem).at(0).text()).toContain('Message 1');
   });
 
-  it('Show Placeholder if no item exists', async () => {
-    await wrapper.findAllComponents(NewsItem).at(0).find('.remove-button').trigger('click');
-
+  it('Show if no item exists', () => {
+    wrapper = createWrapper({
+      propsData: {
+        initialNews: [],
+      }
+    });
     expect(wrapper.findAllComponents(NewsItem).length).toEqual(0);
     expect(wrapper.find('#news-placeholder').text()).toEqual('The list is empty :(');
-
-    await wrapper.find('#news-input').trigger('submit');
-    expect(wrapper.findAllComponents(NewsItem).length).toEqual(1);
-    expect(wrapper.find('#news-placeholder').exists()).toEqual(false);
   });
 });
